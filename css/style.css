@@ -1484,6 +1484,23 @@ header {
         text-align: center;
     }
 
+    #weddingProgramm .event-time-block
+    {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    #weddingProgramm .event-dotts
+    {
+        height: 20px;
+        position: unset;
+    }
+    #weddingProgramm .event-descr:first-child .event-dotts:first-child
+    {
+        display: none;
+    }
+
   
     /* #about-couple-content, #about-couple-content.straight {
       min-height: 40vh;
