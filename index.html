@@ -1,0 +1,765 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Алёна и Олег</title>
+    <link rel="shortcut icon" type="image/x-icon" href="resources/icons/wedding.jpg" />
+    
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
+
+    <link href="css/style.css?ver=0.5.0" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css?family=Marck+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
+
+    <script>
+        Array.prototype.back = function()
+        {
+            return this[this.length - 1];
+        }
+
+        function initButtonsActions()
+        {
+            $("#mobile-menu-btn").click(function(){
+                $(this).toggleClass("show");
+                $("header").toggleClass("show");
+            });
+        }
+
+        function initTimer()
+        {
+            // Set the date we're counting down to
+            const weddingDate = new Date("Jun 27, 2020 12:00:00");
+            const words = 
+            {
+                "before":
+                {
+                    
+                    days    :	['день'   , 'дня'    , 'дней'   ],
+                    hours   :	['час'    , 'часа'   , 'часов'  ],
+                    minutes :	['минута' , 'минуты' , 'минут'  ],
+                    seconds :	['секунда', 'секунды', 'секунд' ]
+                },
+                "after":
+                {
+                    days    :	['день'   , 'дня'    , 'дней'   ],
+                    hours   :	['час'    , 'часа'   , 'часов'  ],
+                    minutes :	['минуту' , 'минуты' , 'минут'  ],
+                    seconds :	['секунду', 'секунды', 'секунд' ]
+                }
+            };
+            
+            let dateFormatStr = ( weddingDate.getDate() < 10 ? '0' : '' + weddingDate.getDate() ) + '/' 
+                              + ( ( ( weddingDate.getMonth() + 1 ) < 10 ? '0' : '' ) + ( weddingDate.getMonth() + 1 ) ) + '/' 
+                              + weddingDate.getFullYear();
+                              
+            document.getElementById("date").innerHTML = dateFormatStr;
+            $("#weddingProgramm>.date")[0].innerHTML = dateFormatStr;
+
+            // Update the count down every 1 second
+            let x = setInterval(function() 
+            {
+                // Get today's date and time
+                let now = new Date().getTime();
+
+                // Find the distance between now and the count down date
+                let distance = weddingDate.getTime() - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                let result = 
+                {
+                     days    : Math.floor( Math.abs(distance) / (1000 * 60 * 60 * 24)),
+                     hours   : Math.floor((Math.abs(distance) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                     minutes : Math.floor((Math.abs(distance) % (1000 * 60 * 60)) / (1000 * 60)),
+                     seconds : Math.floor((Math.abs(distance) % (1000 * 60)) / 1000)
+                };
+
+                let captionFirst  = distance > 0 ? "До нашей свадьбы" : "Мы уже";
+                let captionSecond = distance > 0 ? "Осталось" : "Женаты";
+
+                document.getElementById("firstLine").innerHTML = captionFirst;
+                document.getElementById("secondLine").innerHTML = captionSecond;
+
+                let  curWords = distance > 0 ? words["before"] : words["after"];
+                for ( let timerPart in result )
+                {
+                    let val = result[timerPart];
+                    let wordCase = ( val % 100 > 10 && val % 100 < 15 || val % 10 >= 5 || val % 10 === 0 )
+                                 ? 2 : ( val % 10 === 1 ? 0 : 1 );
+
+                    let elem = document.getElementById(timerPart);
+                    elem.firstElementChild.innerHTML = val < 10 ? '0'+val : val;
+                    elem.lastElementChild.innerHTML = curWords[timerPart][wordCase];
+                }
+            }, 1000);
+        }
+        
+        function initMap()
+        {
+            console.log('Ready to init map!');
+            const coordinates = { lat: 55.775012, lng: 37.633113 }
+            
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: coordinates,
+                zoom: 15,
+                scrollwheel: false
+            });
+            
+            var icon = {
+                url: 'resources/icons/map_marker.png', // url
+                scaledSize: new google.maps.Size(32, 50), // scaled size
+                //origin: new google.maps.Point(0,0), // origin
+                //anchor: new google.maps.Point(0, 0) // anchor
+            };
+            
+            var marker = new google.maps.Marker({
+                position: coordinates,
+                map: map,
+                animation: google.maps.Animation.DROP,
+                icon: icon
+            });
+            
+            $.getJSON("resources/map_styles.json", function(data) {
+                console.log('styles loaded:');
+                console.log(data);
+                map.setOptions({styles: data});
+            });
+        }
+
+        function init()
+        {
+            initButtonsActions();
+
+            initTimer();
+        }
+
+        function EventModel()
+        {
+            let self = this;
+
+            self.caption = ko.observable("");
+            self.date    = ko.observable("");
+            self.descr   = ko.observable("");
+            self.photo   = ko.observable("");
+
+            self.__init__ = function( data )
+            {
+                if ( typeof data["caption"] !== undefined )
+                {
+                    self.caption( data["caption"] );
+                }
+                if ( typeof data["date"] !== undefined )
+                {
+                    self.date( data["date"] );
+                }
+                if ( typeof data["descr"] !== undefined )
+                {
+                    self.descr( data["descr"] );
+                }
+                if ( typeof data["photo"] !== undefined )
+                {
+                    self.photo( data["photo"] );
+                }
+            }
+
+            return self;
+        }
+
+        function EventsModel()
+        {
+            let self = this;
+
+            self.eventsInfoFull    = ko.observableArray([]);
+            self.eventsInfoPreview = ko.observableArray([]);
+            self.curEvent          = ko.observable(-1);
+
+            self.__init__ = function(data)
+            {
+                if ( typeof data["loveStory"] !== "undefined" )
+                {
+                    let events = data["loveStory"];
+
+                    for ( let event of events )
+                    {
+                        self.eventsInfoPreview.push( new EventModel() );
+                        self.eventsInfoFull.push( new EventModel() );
+
+                        self.eventsInfoPreview().back().__init__({ 
+                            date   : event.date,
+                            caption: event.caption,
+                            descr  : event.descr
+                        });
+                        self.eventsInfoFull().back().__init__({ 
+                            date   : event.date,
+                            caption: event.caption,
+                            descr  : event.fullDescr,
+                            photo  : event.photo
+                        });
+                    }
+
+                    if ( events.length > 0 ) { self.curEvent(0); }
+                }
+                else if ( typeof data["weddingProgramm"] !== "undefined" )
+                {
+                    let weddingProgrammData = data["weddingProgramm"];
+                    self.eventsInfoFull.push( new EventModel() );
+                    if ( typeof weddingProgrammData["stylistics"] !== "undefined" )
+                    {
+                        let stylistics = weddingProgrammData["stylistics"];
+                        self.eventsInfoFull().back().__init__({ 
+                            caption: stylistics.caption,
+                            descr  : stylistics.descr
+                        });
+                    }
+                    if ( typeof weddingProgrammData["programm"] !== "undefined" )
+                    {
+                        for ( let event of weddingProgrammData["programm"] )
+                        {
+                            self.eventsInfoPreview.push( new EventModel() );
+                            self.eventsInfoPreview().back().__init__({ 
+                                date   : event.date,
+                                caption: event.caption,
+                                descr  : event.descr
+                            });
+                        }
+                        if ( weddingProgrammData["programm"].length > 0 ) { self.curEvent(0); }
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+            self.changeToEvent = function(idx)
+            {
+                self.curEvent(idx);
+            }
+
+            self.changeToPrevEvent = function()
+            {
+                if (self.curEvent() === 0 )
+                {
+                    self.curEvent(self.eventsInfoPreview().length - 1)
+                }
+                else
+                {
+                    self.curEvent(self.curEvent() - 1);
+                }
+            }
+
+            self.changeToNextEvent = function()
+            {
+                if (self.curEvent() === self.eventsInfoPreview().length - 1 )
+                {
+                    self.curEvent(0)
+                }
+                else
+                {
+                    self.curEvent(self.curEvent() + 1);
+                }
+            }
+
+            return self;
+        }
+        
+        function calcImagesPerScreenCount()
+        {
+            let windowWidth = window.innerWidth;
+            if ( windowWidth > 1024 )
+            {
+                return 4;
+            }
+            if ( windowWidth > 600 )
+            {
+                return 3;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+        
+        function ImagesStruct(name)
+        {
+            return {
+                full : 'resources/images/gallery/' + ( name ) + '.JPG',
+                thumb: 'resources/images/gallery/' + ( name ) + '.thumb.JPG'
+            };
+        }
+        
+        const IMAGE_STATE = 
+        {
+            CLOSED: 0,
+            LOADING: 1,
+            LOADED: 2
+        };
+        const MOVE_STATE = 
+        {
+            NONE: 0,
+            TO_LEFT: 1,
+            TO_RIGHT: 2
+        }
+        function GalleryModel()
+        {
+            let self = this;
+
+            self.imagesCount = 12;
+            self.images = []; //Array.apply(null, {length: self.imagesCount}).map( (elem, idx) => 'resources/images/gallery/' + ( idx + 1 ) + '.JPG' );
+            self.templateAreas = "\"";
+            
+            for ( let i = 0; i < self.imagesCount; ++i )
+            {
+                self.images.push( ImagesStruct ( i + 1 ) );
+                self.templateAreas += ( i === self.imagesCount / 2 ? "\" \"" : "" ) + "block" + i + " ";
+            }
+            self.templateAreas += "\"";
+            
+            self.imagesPerScreenCount = ko.observable( calcImagesPerScreenCount() ); // Зависит от ширины экрана
+            
+            self.imageWidth = ko.computed(function(){ return Math.ceil( 100 / self.imagesPerScreenCount() ); });
+            self.curShift = ko.observable(0);
+            self.curTranslateX = ko.computed(function(){
+                if ( self.imagesCount / 2.0 - self.imagesPerScreenCount()  < -self.curShift() )
+                {
+                    self.curShift( -( self.imagesCount / 2.0 - self.imagesPerScreenCount() ) );
+                    return self.curTranslateX();
+                }
+                return self.curShift() * self.imageWidth();
+            });
+
+            //self.curTranslateX.subscribe( () => $("#gallery>div").css( "transform", "translateX("+self.curTranslateX()+"vw)" ) );
+            
+            self.moveRightEnable = ko.computed(function(){
+                return self.imagesCount / 2.0 - self.imagesPerScreenCount()  > -self.curShift();
+                //return self.curTranslateX() > 100 * ( 1 - self.imagesCount / 2.0 / self.imagesPerScreenCount() );
+            });
+            self.moveLeftEnable = ko.computed(function(){
+                return self.curShift() < 0;
+            });
+            
+            self.moveRight = function () 
+            { 
+                if ( self.moveRightEnable() ) 
+                    self.curShift( self.curShift() - 1 );
+                    //self.curTranslateX( self.curTranslateX() - 100 / self.imagesPerScreenCount() );
+            }
+            self.moveLeft  = function ()
+            { 
+                if ( self.moveLeftEnable() )
+                    self.curShift( self.curShift() + 1 );
+                    //self.curTranslateX( self.curTranslateX() + 100 / self.imagesPerScreenCount() );
+            }
+            
+            function mod(n, m) {
+              return ((n % m) + m) % m;
+            }
+            //Полный экран
+            self.fullScreenImage = ko.observable(-1);
+            self.fullScreenImageState = ko.observable(IMAGE_STATE.CLOSED);
+            self.fullScreenMoveState = ko.observable(MOVE_STATE.NONE);
+
+            const animationLength = 1; // Продолжительность анимации в секундах!
+
+            self.fullScreenImageAnimation = ko.computed(function(){
+                switch (self.fullScreenMoveState())
+                {
+                    case MOVE_STATE.TO_LEFT:
+                        return "hideToRight " + animationLength + "s linear";
+                    case MOVE_STATE.TO_RIGHT:
+                        return "hideToLeft " + animationLength + "s linear";
+                    default:
+                        return "";
+                }
+            });
+
+            self.showImage = function(image)
+            {
+                if ( self.fullScreenImage() === -1 )
+                {
+                    self.fullScreenImageState(IMAGE_STATE.LOADING);
+                    self.fullScreenImage( self.images.indexOf(image) );
+                }
+            }
+            self.imageLoaded = function()
+            {
+                self.fullScreenImageState(IMAGE_STATE.LOADED);
+            }
+            self.closeImage = function()
+            {
+                if ( self.fullScreenImage() !== -1 )
+                {
+                    self.fullScreenImage(-1);
+                    self.fullScreenImageState(IMAGE_STATE.CLOSED);
+                }
+            }
+            self.showNextImage = function()
+            {
+                if ( self.fullScreenImage() !== -1 )
+                {
+                    self.fullScreenMoveState( MOVE_STATE.TO_RIGHT );
+                    setTimeout(
+                        function()
+                        {
+                            self.fullScreenImage( mod ( self.fullScreenImage() + 1, self.imagesCount ) );
+                            self.fullScreenImageState( IMAGE_STATE.LOADING );
+                        },
+                        animationLength * 1000 / 2 * 0.75 // Здесь должна быть константа!!
+                    );
+                    setTimeout(
+                        function()
+                        {
+                            self.fullScreenMoveState( MOVE_STATE.NONE );
+                        },
+                        animationLength * 1000 // Здесь должна быть константа!!
+                    );
+                }
+            }
+            self.showPrevImage = function()
+            {
+                if ( self.fullScreenImage() !== -1 )
+                {
+                    self.fullScreenMoveState( MOVE_STATE.TO_LEFT );
+                    setTimeout(
+                        function()
+                        {
+                            self.fullScreenImage( mod ( self.fullScreenImage() - 1, self.imagesCount ) );
+                            self.fullScreenImageState( IMAGE_STATE.LOADING );
+                        },
+                        animationLength * 1000 / 2 * 0.75 // Здесь должна быть константа!!
+                    );
+                    setTimeout(
+                        function()
+                        {
+                            self.fullScreenMoveState( MOVE_STATE.NONE );
+                        },
+                        animationLength * 1000 // Здесь должна быть константа!!
+                    );
+                }
+            }
+
+            return self;
+        }
+
+        function ViewModel()
+        {
+            let self = this;
+
+            self.loveStory = new EventsModel();
+            self.loveStory.__init__(
+            {
+                "loveStory": [
+                    {
+                        date: "2016.07.23",
+                        caption: "Знакомство",
+                        descr: "Как хорошо, что мы оказались в нужном месте, в нужное время.",
+                        fullDescr: "На дворе был жаркий солнечный день, Алёна гостила на даче у своей сестры Лизы, а Олег приехал со своими одногруппниками к Лизе (которая так же была его одногруппницей) отмечать окончание 4 курса бакалавриата. Лиза представила нас друг другу и в следующие два дня мы были всё время вместе. Но в конце второго дня нам пришлось проститься, не зная, была ли эта встреча последней для нас.",
+                        photo: "resources/images/love_story/event1.jpg"
+                    },
+                    {
+                        date: "2016.07.26",
+                        caption: "Начало отношений",
+                        descr: "Это было неожиданно, и мокро." ,
+                        fullDescr: "Проведя один день друг без друга, мы поняли, что так не должно продолжаться и договорились о встрече. Наша совсместная не любовь к шумным мегополисам привела нас к варианту прогулки по Лосинному острову. Мы шли куда глаза глядели одурманенные друг другом. Во время прогулки начался ливень и поняв, что дальше идти невозможно, мы остановились. У нас был только один зонтик, поэтому мы прижались поближе друг к другу и Олег решил сделать первый шаг - впервые поцеловав свою будущую невесту.",
+                        photo: "resources/images/slider/1.jpg"
+                    },
+                    {
+                        date: "2016.12.31",
+                        caption: "Тайное становится явным",
+                        descr: "Вечер внезапных встреч в дружной компании",
+                        fullDescr: "Всё это время мы не афишировали свои отношения и скрывали их даже от некоторых близких нам людей. Сейчас, навреное, уже не совсем понятно зачем. Главным образом мы скрывали их от Лизы. И вот, мы собрались встречать новый 2017 год у наших друзей, где произошла неожтданная для Лизы встреча с сестрой.",
+                        photo: "resources/images/love_story/event1.jpg"
+                    },
+                    {
+                        date: "2018.01.01",
+                        caption: "Домашний очаг",
+                        descr: "История о том, как Олег приехал погостить к Алёне и так и не уехал",
+                        fullDescr: "",
+                        photo: "resources/images/slider/1.jpg"
+                    },
+                    {
+                        date: "2019.06.27",
+                        caption: "Предложение",
+                        descr: "Неожиданное, приятное и незабываемое",
+                        fullDescr: "",
+                        photo: "resources/images/slider/1.jpg"
+                    }
+                ]
+            });
+            
+            self.weddingProgramm = new EventsModel();
+            self.weddingProgramm.__init__(
+                {
+                    weddingProgramm: 
+                    {
+                        stylistics:
+                        {
+                            caption: "Стилистика свадьбы",
+                            descr: "Тут будет расписана стилистика свадьба, подробнее, мб с кружочками"
+                        },
+                        programm:
+                        [
+                            {
+                                date: "10-00",
+                                caption: "Фотографирование",
+                                descr: "Мы будем фотографироваться, а вы отдыхайте!)"
+                            },
+                            {
+                                date: "12-00",
+                                caption: "Сбор гостей",
+                                descr: "Приезжайте  гости дорогие"
+                            },
+                            {
+                                date: "13-00",
+                                caption: "Церемония",
+                                descr: "Тут мы такие все красивые будем стоять у арки и нас объявляют мужем и женой. Ура. Аплодисменты. Крики \"Ура\". И мы радостные проводим всех к столу"
+                            },
+                            {
+                                date: "16-00",
+                                caption: "Банкет",
+                                descr: "Кушать подано, садитесь жрать пожалуйста"
+                            },
+                            {
+                                date: "23-00",
+                                caption: "Конец",
+                                descr: "Ну вот и всё. Но вы это, приходите если шо"
+                            }
+                        ]
+                    }
+                }
+            );
+
+            self.gallery= new GalleryModel();
+            
+            self.keyEventsHandler = function(data, event)
+            {
+                switch (event.key)
+                {
+                    case "Escape":
+                        self.gallery.closeImage();
+                        break;
+                    case "ArrowRight":
+                        self.gallery.showNextImage();
+                        break;
+                    case "ArrowLeft":
+                        self.gallery.showPrevImage();
+                        break;
+                }
+                return true;
+            }
+
+            return self;
+        }
+
+        var vm;
+        function main()
+        {
+            init();
+
+            vm = new ViewModel();
+            ko.applyBindings(vm);
+        }
+        
+        
+        if ( window.addEventListener ) {  
+           window.addEventListener( "load", main, false ); 
+        } 
+        else  
+           if ( window.attachEvent ) {  
+              window.attachEvent( "onload", main ); 
+        } else  
+              if ( window.onLoad ) { 
+                 window.onload = main; 
+        }
+        
+        window.onresize = function(event) {
+            if ( vm && vm.gallery )
+            {
+                vm.gallery.imagesPerScreenCount( calcImagesPerScreenCount() );
+            }
+        };
+    </script>
+</head>
+<body data-bind="event: { keydown: keyEventsHandler }">
+    <!-- Меню -->
+    <header class="ready">
+        <div id="headline-menu"></div>
+        <!-- <a id="about-us-menu" href="#about-us">О нас</a> -->
+        <a id="lovestory-menu" href="#lovestory">Наша история</a>
+        <a id="photo-gallery-menu" href="#photo-gallery">Фотогалерея</a>
+        <!-- <a id="friends-menu" href="#friends" class=" hide">Наши друзья</a> -->
+        <a id="wishlist-menu" href="#wishlist">Желания</a>
+        <a id="program-menu" href="#program">Программа</a>
+        <a id="map-menu" href="#map">Карта</a>
+    </header>
+    <div id="mobile-menu-btn">
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    <!-- Загшлушка -->
+    <div id="main-photo-filler"></div>
+    <!-- Основная информация -->
+    <div id="main-photo-wrapper">
+        <div id="main-photo">
+            <div id="information">
+                <div id="names">Олег и Алёна</div>
+                <div id="names-date-margin"></div>
+                <div id="date"></div>
+                <div id="data-hashtag-margin"></div>
+                <div id="hashtag">#AlyOlegWED</div>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <!-- Таймер -->
+        <div id="timerBlock">
+            <div id="captionBlock">
+                <div id="icon">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="548px" height="548px" viewBox="0 -58 548 548" enable-background="new 0 -58 548 548" xml:space="preserve"><path fill="#FFFFFF" d="M274,214l16-20c95.5,164.5-127.121,332.205-258,174c-45.5-55-36-155.5,24-206 c52.998-44.606,131.71-62.113,209,2l-15,18c-106-87.5-210.865,1.646-221,66C9,375,113.123,416.735,164,414 C257,409,326,313.5,274,214z"></path><path fill="#FFFFFF" d="M265,344c-59.5-128,64-226.5,160-191c67.193,24.848,104.191,96.562,86,163c-23,84-135.5,140-224,58l-11,13 c105,91.5,230.5,26.5,256-64c15.274-54.21,6.072-124-60-171l9-8c-15.5-16-68-32.372-91-32l2,11c-136.5-3-204,128-138,237L265,344z"></path><polygon fill="#FFFFFF" points="418,116 377,25 419,40 423,118 "></polygon><polygon fill="#FFFFFF" points="431,120 427,43 491,66 442,124 "></polygon><polygon fill="#FFFFFF" points="449,127 499,69 543,84 455,128 "></polygon><polygon fill="#FFFFFF" points="377,17 406,0 418,32 "></polygon><polygon fill="#FFFFFF" points="426,32 414,0 462,16 "></polygon><polygon fill="#FFFFFF" points="433,37 471,20 491,57 "></polygon><polygon fill="#FFFFFF" points="481,22 500,57 528,39 "></polygon><polygon fill="#FFFFFF" points="507,62 535,43 546,76 "></polygon></svg>
+                </div>
+                <div id="caption">
+                    <span id="firstLine"></span>
+                    <p id="secondLine"></p>
+                </div>
+            </div>
+            <div id="timer">
+                <div id="days">
+                    <p class="value">00</p>
+                    <span class="caption">Дней</span>
+                </div>
+                <div id="hours">
+                    <p class="value">00</p>
+                    <span class="caption">Часов</span>
+                </div>
+                <div id="minutes">
+                    <p class="value">00</p>
+                    <span class="caption">Минут</span>
+                </div>
+                <div id="seconds">
+                    <p class="value">00</p>
+                    <span class="caption">Секунд</span>
+                </div>
+            </div>
+        </div>
+        <!-- Наша история -->
+        <div id="loveStory" data-bind="with: loveStory">
+            <span id="ls-header">Наша История</span>
+            <span id="ls-header-desc">от начала и до сегодня</span>
+            <div class="events-block">
+                <div data-bind="click: changeToPrevEvent" id="ls-events-prev-buttton">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve">
+                        <g>
+                            <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5   c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z   "/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="events-full-descr-block" data-bind="foreach: eventsInfoFull">
+                    <div data-bind="css: { selected: $parent.curEvent() === $index() }" class="event-full-descr">
+                        <div class="event-full-descr-content">
+                            <img data-bind="if: photo() !== '', attr: { src: photo } " class="event-photo" src="">
+                            <span data-bind="text: caption" class="event-caption underline-text">Знакомство</span>
+                            <span data-bind="text: date" class="event-date-mobile numeric-text">2016.07.23</span>
+                            <span data-bind="text: descr" class="event-descr">А тут прдет развернутый рассказ о том, что происходило у Лизы на даче. Про мячики, забеги вокруг бассейна и прочее...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="events-descr-block" data-bind="foreach: eventsInfoPreview">
+                    <div data-bind="css: { selected: $parent.curEvent() === $index() }, click: function () { $parent.changeToEvent($index()); }" class="event-descr">
+                        <div class="event-time-block">
+                            <span data-bind="text: date" class="event-date numeric-text">2016.07.23</span>
+                            <span class="event-dotts"></span>
+                        </div>
+                        <div class="event-text-block">
+                            <span data-bind="text: caption" class="event-caption">Знакомство</span>
+                            <span data-bind="text: descr" class="event-descr">Мы познокомились у Лизы на даче</span>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="click: changeToNextEvent" id="ls-events-next-buttton">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve">
+                        <g>
+                            <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5   c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z   "/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <!-- Галерея -->
+        <div id="galleryWrapper" data-bind="with: gallery">
+            <div id="scrollLeftButton" data-bind="click: function() { moveLeft(); }, css: { 'hidden': !moveLeftEnable() }"></div>
+            <div id="gallery" data-bind="foreach: images, style: { gridTemplateAreas: templateAreas, gridTemplateColumns: 'repeat('+ ( imagesCount / 2 ) +', ' + imageWidth() + 'vw)', gridTemplateRows: 'repeat(2, ' + imageWidth() + 'vw)' }">
+                <div data-bind="click: $parent.showImage, style: { gridArea: 'block'+$index(), backgroundImage: 'url('+thumb+')', transform: 'translateX('+$parent.curTranslateX()+'vw)' }"></div>
+            </div>
+            <div id="scrollRightButton" data-bind="click: function() { moveRight(); }, css: { 'hidden': !moveRightEnable() }"></div>
+        </div>
+        <!-- Программа дня -->
+        <div id="weddingProgramm" data-bind="with: weddingProgramm">
+            <span id="ls-header">Программа дня</span>
+            <span id="ls-header-desc" class="date"></span>
+            <div class="events-block">
+                <div class="events-full-descr-block" data-bind="foreach: eventsInfoFull">
+                    <div data-bind="css: { selected: $parent.curEvent() === $index() }" class="event-full-descr">
+                        <div class="event-full-descr-content">
+                            <img data-bind="if: photo() !== '', attr: { src: photo } " class="event-photo" src="">
+                            <span data-bind="text: caption" class="event-caption underline-text"></span>
+                            <span data-bind="text: date" class="event-date-mobile numeric-text"></span>
+                            <span data-bind="text: descr" class="event-descr"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="events-descr-block" data-bind="foreach: eventsInfoPreview">
+                    <div class="event-descr">
+                        <div class="event-time-block">
+                            <div class="event-time-block">
+                            <span data-bind="text: date" class="event-date numeric-text"></span>
+                            <span class="event-dotts"></span>
+                        </div>
+                        <div class="event-text-block">
+                            <span data-bind="text: caption" class="event-caption"></span>
+                            <span data-bind="text: descr" class="event-descr"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Карта -->
+        <div id="map">
+            <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD71v94hZRjhA7RirTbszY5aIKzsmZb78&callback=initMap"></script>
+    </div>
+    <!-- Полноэкранная галлерея -->
+    <div id="fullScreenGallery" data-bind="with: gallery, css: { show: gallery.fullScreenImage() !== -1 }">
+        <div id="prevImageButtonWrapper" data-bind="click: showPrevImage">
+            <div class="prevImageButton"></div>
+        </div>
+        <div id="imageWrapper" data-bind="if: fullScreenImage() !== -1">
+            <div id="imageContent" data-bind="style: { animation: fullScreenImageAnimation }">
+                <img data-bind="attr: { src: images[fullScreenImage()].full },
+                                visible: fullScreenImageState() === IMAGE_STATE.LOADED,
+                                event: { load: imageLoaded }"
+                >
+                <div id="preloader" data-bind="visible: fullScreenImageState() === IMAGE_STATE.LOADING">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="548px" height="548px" viewBox="0 -58 548 548" enable-background="new 0 -58 548 548" xml:space="preserve">
+                        <path fill="#FFFFFF" d="M274,214l16-20c95.5,164.5-127.121,332.205-258,174c-45.5-55-36-155.5,24-206 c52.998-44.606,131.71-62.113,209,2l-15,18c-106-87.5-210.865,1.646-221,66C9,375,113.123,416.735,164,414 C257,409,326,313.5,274,214z"></path>
+                        <path fill="#FFFFFF" d="M265,344c-59.5-128,64-226.5,160-191c67.193,24.848,104.191,96.562,86,163c-23,84-135.5,140-224,58l-11,13 c105,91.5,230.5,26.5,256-64c15.274-54.21,6.072-124-60-171l9-8c-15.5-16-68-32.372-91-32l2,11c-136.5-3-204,128-138,237L265,344z"></path>
+                        <!-- <polygon fill="#FFFFFF" points="418,116 377,25 419,40 423,118 "></polygon><polygon fill="#FFFFFF" points="431,120 427,43 491,66 442,124 "></polygon><polygon fill="#FFFFFF" points="449,127 499,69 543,84 455,128 "></polygon><polygon fill="#FFFFFF" points="377,17 406,0 418,32 "></polygon><polygon fill="#FFFFFF" points="426,32 414,0 462,16 "></polygon><polygon fill="#FFFFFF" points="433,37 471,20 491,57 "></polygon><polygon fill="#FFFFFF" points="481,22 500,57 528,39 "></polygon><polygon fill="#FFFFFF" points="507,62 535,43 546,76 "></polygon> -->
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div id="nextImageButtonWrapper" data-bind="click: showNextImage">
+            <div class="nextImageButton"></div>
+        </div>
+        <div id="closeImageButtonWrapper" data-bind="click: closeImage">
+            <div class="closeImageButton"></div>
+        </div>
+    </div>
+</body>
+</html>

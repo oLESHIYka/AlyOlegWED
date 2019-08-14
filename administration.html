@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=600, initial-scale=1.0">
+
+    <title>Гости и приглашения</title>
+    <link rel="shortcut icon" type="image/x-icon" href="resources/icons/wedding.jpg" />
+    
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
+
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+
+    <script>
+        const _NO_DB = false;
+
+
+        Array.prototype.back = function()
+        {
+            return this[this.length - 1];
+        }
+
+        function Guest()
+        {
+            let self = this;
+
+            self.id       = ko.observable(-1);
+            self.name     = ko.observable("");
+            self.age      = ko.observable("");
+            self.category = ko.observable("");
+
+            self.ageCaption = ko.computed(function(){
+                if (self.age() === "") return "Лет";
+                if (self.age()%100 < 10 || self.age()%100 > 15)
+                {
+                    return self.age()%10 == 1 ? "Год" : self.age()%10 > 1 && self.age()%10 < 5 ? "Года" : "Лет";
+                }
+                return "Лет";
+            });
+
+            self.isEditing = ko.observable(false);
+
+            self.clear = function()
+            {
+                self.id      (-1);
+                self.name    ("");
+                self.age     ("");
+                self.category("");
+            }
+            self.setData = function(data)
+            {
+                if ( data["id"] !== undefined && data["name"] !== undefined )
+                {
+                    self.id      (data["id"]);
+                    self.name    (data["name"]);
+                    if ( data["age"] !== undefined && data["category"] !== undefined )
+                    {
+                        self.age     (data["age"]);
+                        self.category(data["category"]);
+                    }
+                }
+                else
+                {
+                    console.warn('Unexpected data received: \n' + JSON.stringify(data, null, '\t'));
+                }
+            }
+
+            return self;
+        }
+
+        function Invitation(guestsList)
+        {
+            let self = this;
+            // поля:
+            self.id     = ko.observable(-1);
+            self.text   = ko.observable("");
+            self.guests = ko.observableArray([]);
+
+            self.guestsNames = ko.computed(function(){
+                return self.guests().map(guest => guest.name()).toString();
+            });
+            // методы:
+            self.addGuest = function(guestIdx)
+            {
+                self.guests.push(new Guest());
+            }
+            self.removeGuest = function(idx)
+            {
+                self.guests.splice(idx, 1);
+            }
+
+            self.clear = function()
+            {
+                self.id(-1);
+                self.text("");
+                self.guests.removeAll();
+            }
+            self.setData = function(data)
+            {
+                if ( data["id"] !== undefined && data["text"] !== undefined && data["guests"] !== undefined )
+                {
+                    self.id  (data["id"]);
+                    self.text(data["text"]);
+                    
+                    self.guests.removeAll();
+                    for ( let guestId of data["guests"] )
+                    {
+                        let foundedGuests = guestsList().filter( guest => guest.id() === guestId );
+                        if ( foundedGuests.length > 0 )
+                        {
+                            self.addGuest();
+                            self.guests().back().setData({id: guestId, name: foundedGuests[0].name() });
+                        }
+                    }
+                }
+                else
+                {
+                    console.warn('Unexpected data received: \n' + JSON.stringify(data, null, '\t'));
+                }
+            }
+
+            return self;
+        }
+
+        function ViewModel()
+        {
+            let self = this;
+            // поля:
+            self.guests       = ko.observableArray([]);
+            self.invitations  = ko.observableArray([]);
+            self.guestCategories = ko.observableArray([]);
+            
+            self.newInvitation = new Invitation(self.guests);
+            self.newGuest = ko.observable(new Guest());
+            self.selectedNewGuest = ko.observable(-1);
+
+            self.newInvitationGuests = ko.computed(function(){
+                let alreadyInvitedGuests = [];
+                for (let invation of self.invitations())
+                {
+                    for (let guest of invation.guests())
+                    {
+                        alreadyInvitedGuests.push(guest);
+                    }
+                }
+                for (let guest of self.newInvitation.guests())
+                {
+                    alreadyInvitedGuests.push(guest);
+                }
+
+                return self.guests().filter(guest => alreadyInvitedGuests.find(inviteGuest => inviteGuest.id() === guest.id() ) === undefined);
+            });
+            self.newInvitationButtonCaption = ko.computed(function(){
+                return self.newInvitation.id() === -1 ? "Создать" : "Сохранить";
+            });
+            self.newInvitationButtonEnabled = ko.computed(function(){
+                return self.newInvitation.guests().length > 0;
+            });
+            // методы:
+            self.addGuest = function()
+            {
+                self.guests.push(new Guest());
+            }
+            self.removeGuest = function(idx)
+            {
+                self.guests.splice(idx, 1);
+            }
+            
+            self.addInvitation = function()
+            {
+                self.invitations.push(new Invitation(self.guests));
+            }
+            self.editInvitation = function(curInvitation)
+            {
+                self.newInvitation.setData({
+                    id: curInvitation.id(),
+                    text: curInvitation.text(),
+                    guests: curInvitation.guests().map(guest => guest.id())
+                });
+
+                if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) 
+                {
+                    $('body').animate({ scrollTop: $("#editBlock").offset().top }, 1100);
+                } 
+                else 
+                {
+                    $('html').animate({ scrollTop: $("#editBlock").offset().top }, 1100);
+                }
+            }
+            self.removeInvitation = function(idx)
+            {
+                self.invitations.splice(idx, 1);
+            }
+
+            // Обработка полученных данных:
+            self.setData = function(data)
+            {
+                if ( data["guests"] !== undefined || data["invitations"] !== undefined || data["categories"] !== undefined )
+                {
+                    if ( data["categories"] !== undefined )
+                    {
+                        self.guestCategories(data["categories"]);
+                    }
+                    if ( data["guests"] !== undefined )
+                    {
+                        self.guests.removeAll();
+                        for ( let guest of data["guests"] )
+                        {
+                            self.addGuest();
+                            self.guests().back().setData(guest);
+                        }
+                    }
+                    if ( data["invitations"] !== undefined )
+                    {
+                        self.invitations.removeAll();
+                        for ( let invitations of data["invitations"] )
+                        {
+                            self.addInvitation();
+                            self.invitations().back().setData(invitations);
+                        }
+                    }
+                }
+                else
+                {
+                    console.warn('Unexpected data received: \n' + JSON.stringify(data, null, '\t'));
+                }
+            }
+
+            // Отправка запросов:
+            self.addNewGuest = function(guestInfo)
+            {
+                if (guestInfo.name() !== "")
+                {
+                    requestData(
+                        {
+                            "request_type": "ADD_GUEST", 
+                            "name"        : guestInfo.name(),
+                            "age"         : guestInfo.age() === "" ? "NULL" : guestInfo.age(),
+                            "category"    : typeof guestInfo.category() === "undefined" ? "NULL" : guestInfo.category()
+                        },
+                        guestInfo.clear
+                    );                    
+                }
+            }
+
+            self.editGuestInfo = function(guestInfo)
+            {
+                if ( guestInfo.isEditing() && guestInfo.name() !== "" && guestInfo.id() !== -1 )
+                {
+                    requestData(
+                        {
+                            "request_type": "EDIT_GUEST",
+                            "id"          : guestInfo.id(), 
+                            "name"        : guestInfo.name(),
+                            "age"         : guestInfo.age() === "" ? "NULL" : guestInfo.age(),
+                            "category"    : typeof guestInfo.category() === "undefined" ? "NULL" : guestInfo.category()
+                        },
+                        function(){ guestInfo.isEditing(false); }
+                    );
+                }
+            }
+
+            self.showDeleteGuestDiolog = function(guest)
+            {
+                showDeleteDiolog('Удалить гостя "' + guest.name() + '"?', self.delGuest, guest.id());
+            }
+            self.delGuest = function(guestId)
+            {
+                requestData(
+                    {
+                        "request_type": "DEL_GUEST",
+                        "id"          : guestId
+                    }
+                );
+            }
+
+            self.showDeleteInvitationDiolog = function(invitation)
+            {
+                showDeleteDiolog('Удалить приглашение для "' + invitation.guestsNames() + '"?', self.delInvitation, invitation.id());
+            }
+            self.delInvitation = function(invitationId)
+            {
+                requestData(
+                    {
+                        "request_type": "DEL_INVITATION",
+                        "id"          : invitationId
+                    }
+                );
+            }
+
+            // Функция добавления или редактирования комментария
+            self.addNewInvitation = function(invitation)
+            {
+                if (invitation.id() === -1)
+                {
+                    requestData(
+                        {
+                            "request_type": "ADD_INVITATION", 
+                            "text"        : invitation.text(),
+                            "guests[]"    : invitation.guests().map(guest => guest.id())
+                        },
+                        invitation.clear
+                    );
+                }
+                else
+                {
+                    requestData(
+                        {
+                            "request_type": "EDIT_INVITATION",
+                            "id"          : invitation.id(),
+                            "text"        : invitation.text(),
+                            "guests[]"    : invitation.guests().map(guest => guest.id())
+                        },
+                        invitation.clear
+                    );
+                }
+            }
+
+            // Добавление и удаление гостей в новом приглашении:
+            self.addGuestForNewInvitation = function()
+            {
+                if ( self.selectedNewGuest() !== -1 )
+                {
+                    self.newInvitation.addGuest();
+                    self.newInvitation.guests().back().setData( { id: self.selectedNewGuest().id(), name: self.selectedNewGuest().name() } );
+                }
+            }
+
+            self.delGuestForNewInvitation = function(idx)
+            {
+                if ( idx < self.newInvitation.guests().length )
+                {
+                    self.newInvitation.removeGuest(idx);
+                }
+            }
+
+            return self;
+        }
+
+        var vm;
+        function main()
+        {
+            vm = new ViewModel();
+            ko.applyBindings(vm);
+
+            if (_NO_DB)
+                test();
+            else
+                requestAllData();
+        }
+
+        function setData(data)
+        {
+            if (vm)
+            {
+                vm.setData(data);
+            }
+        }
+
+        function requestData(data, callback)
+        {
+            $.ajax({
+                type: "GET",
+                url: "php/RequestHandler.php",
+                data: data,
+                dataType: "json",
+                success: function(data){
+                    setData(data);
+                    if (typeof callback !== "undefined")
+                    {
+                        callback();
+                    }
+                }
+            });
+        }
+
+        function requestAllData()
+        {
+            requestData( { "request_type": "GET_DATA" } );
+        }
+
+        function showDeleteDiolog(text, callback, deletedElemId)
+        {
+            $("<div>" + text + "</div>").dialog({
+                buttons: {
+                    "Да": function() {
+                        callback(deletedElemId);
+                        $(this).dialog("close");
+                    },
+                    "Отмена": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+
+
+        function test()
+        {
+            vm.setData({
+                guests: [
+                    {
+                        id: 1,
+                        name: "Мама"
+                    },
+                    {
+                        id: 2,
+                        name: "Папа"
+                    },
+                    {
+                        id: 3,
+                        name: "Туся"
+                    }
+                ],
+                invitations: [
+                    {
+                        id: 1,
+                        text: "test\ntext1\nabcdef\nqwerty 1234567890",
+                        guests: [1]
+                    },
+                    {
+                        id: 1,
+                        text: "test text2",
+                        guests: [2,3]
+                    }
+                ],
+                categories: [
+                    {
+                        id: 1,
+                        caption: "Родственники жениха"
+                    }, 
+                    {
+                        id: 2,
+                        caption: "Родственники невесты"
+                    },
+                    {
+                        id: 3,
+                        caption: "Друзья жениха"
+                    },
+                    {
+                        id: 4,
+                        caption: "Друзья невесты"
+                    }
+                ]
+            });
+        }
+    </script>
+
+    <style>
+        #mainBlock
+        {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #listsBlock
+        {
+            display: flex;
+            justify-content: center;
+        }
+        #listsBlock > div
+        {
+            padding: 10px;
+        }
+        #editBlock
+        {
+            display: flex;
+            justify-content: center;
+        }
+        #newInvitationGuestsBlock
+        {
+            display: flex;
+        }
+        .editableBlock
+        {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .editableBlock > *
+        {
+            margin: 3px;
+            padding: 2px;
+        }
+        #whomCaption
+        {
+            margin: 6px 3px 0 0;
+        }
+        #guestsList
+        {
+            width: 177px;
+        }
+        #InvitationText
+        {
+            width: 300px;
+            height: 500px;
+            /* min-height: 230px; */
+            resize: none;
+        }
+        .guestNumber
+        {
+            width: 20px;
+            text-align: right;
+        }
+        .ageBlock
+        {
+            display: flex;
+            width: 80px;
+        }
+        .ageBlock > *
+        {
+            margin: 3px;
+            padding: 2px;
+        }
+        .ageBlock > input
+        {
+            width: 35px;
+        }
+        .newGuest
+        {
+            justify-content: flex-start;
+        }
+
+        .invitationFont
+        {
+            font-family: "Mirza", Verdana, Arial, serif;
+            font-size: 26px;
+            line-height: 1.2em;
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body onload="main()">
+    <div id="mainBlock">
+        <div id="listsBlock">
+            <div id="guests">
+                <div>Список гостей:</div>
+                    <div class="editableBlock guestsHeader">
+                        <div class="guestNumber"></div>
+                        <div class="headerName">Имя</div>
+                        <div class="headerAge">Возраст</div>
+                        <div class="headerCategory">Категория</div>
+                        <div class="headerButtonsSpace"></div>
+                    </div>
+                <!-- ko foreach: guests -->
+                    <div class="editableBlock">
+                        <div class="guestNumber"><span data-bind="text: $index()+1"></span><span>.</span></div>
+                        <input data-bind="value: name, enable: isEditing">
+                        <div class="ageBlock">
+                            <input data-bind="textInput: age, enable: isEditing" type="number" min="0">
+                            <span data-bind="text: ageCaption"></span>
+                        </div>
+                        <select data-bind="options: $root.guestCategories, optionsValue: 'id', optionsText: 'caption', optionsCaption: '', value: category, enable: isEditing"></select>
+                        <input data-bind="visible: !isEditing(), click: function(){isEditing(true);}" type="image" src="resources/icons/edit.png" height="25">
+                        <input data-bind="visible: isEditing(), click: $root.editGuestInfo" type="image" src="resources/icons/complete.png" height="25">
+                        <input data-bind="click: $root.showDeleteGuestDiolog" type="image" src="resources/icons/delete.png" height="25">
+                    </div>
+                <!-- /ko -->
+                <div class="editableBlock newGuest" data-bind="with: newGuest">
+                    <div  class="guestNumber"></div>
+                    <input data-bind="value: name">
+                    <div class="ageBlock">
+                        <input data-bind="textInput: age" type="number" min="0">
+                        <span data-bind="text: ageCaption"></span>
+                    </div>
+                    <select data-bind="options: $root.guestCategories, optionsValue: 'id', optionsText: 'caption', optionsCaption: '', value: category"></select>
+                    <input type="image" src="resources/icons/add.png" data-bind="click: $root.addNewGuest" height="25">
+                    <div style="width: 25px"></div>
+                </div>
+            </div>
+            <div id="invitations">
+                <div>Приглашения:</div>
+                <!-- ko foreach: invitations -->
+                <div class="editableBlock">
+                    <!-- <input data-bind="value: text" disabled> -->
+                    <input data-bind="value: guestsNames" disabled>
+                    <input data-bind="click: $root.editInvitation" type="image" src="resources/icons/edit.png" height="25">
+                    <input data-bind="click: $root.showDeleteInvitationDiolog" type="image" src="resources/icons/delete.png" height="25">
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div id="editBlock">
+            <div data-bind="with: newInvitation">
+                <div>Создать приглашение:</div>
+                <div id="newInvitationGuestsBlock">
+                    <div id="whomCaption">Кому: </div>
+                    <div>
+                        <div data-bind="foreach: guests">
+                            <div class="editableBlock">
+                                <input data-bind="value: name" disabled>
+                                <input type="image" data-bind="click: function(data) { $root.delGuestForNewInvitation($index()); }" src="resources/icons/delete.png" height="25">
+                            </div>
+                        </div>
+                        <div class="editableBlock" data-bind="if: $root.newInvitationGuests().length > 0">
+                            <select id="guestsList" data-bind="options: $root.newInvitationGuests, optionsText: 'name', value: $root.selectedNewGuest"></select>
+                            <input type="image" data-bind="click: $root.addGuestForNewInvitation" src="resources/icons/add.png" height="25">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <textarea id="InvitationText" class="invitationFont" data-bind="value: text"></textarea>
+                </div>
+                <button data-bind="click: $root.addNewInvitation, text: $root.newInvitationButtonCaption, enable: $root.newInvitationButtonEnabled"></button>
+                <button data-bind="click: clear">Сбросить</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

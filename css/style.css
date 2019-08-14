@@ -1,0 +1,1719 @@
+/* Шрифты */
+
+/* Общие правила */
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+a {outline: none;}
+
+html, body 
+{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+body 
+{
+    background-color: #4a4a4a;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+.numeric-text
+{
+    font-family: 'Cinzel', serif;
+}
+.underline-text:before
+{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-left-width: 0px;
+    border-style: solid;
+    border-color: #ddd;
+    -moz-border-image: -moz-linear-gradient(right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+    -webkit-border-image: -webkit-linear-gradient(right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+    border-image: linear-gradient(to right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+    border-image-slice: 0 0 1 0;
+}
+/* Основной цвет */
+#mobile-menu-btn, #timer{
+  background-color: #89d08a;
+}
+/* Меню */
+header {
+    position: fixed;
+    opacity: 1;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    height: 9vh;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -webkit-flex-align: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    background: linear-gradient(to bottom, #000000ad, #00000000);
+  }
+  
+  header.ready {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    transition: transform .4s ease, opacity .4s ease;
+    -webkit-transition: -webkit-transform .4s ease, opacity .4s ease;
+  }
+  
+  header.ready.header-on-change {
+    opacity: 0;
+    transform: scale(.8);
+    -webkit-transform: scale(.8);
+  }
+  
+  header a {
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -webkit-flex-align: center;
+    justify-content: center;
+    -webkit-justify-content: center; 
+    height: 100%;
+    padding: 0 0.8vw;
+    text-decoration: none;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8vw;
+    text-shadow: 0 0 10px rgba(74, 74, 74, 0.6);
+    transition: opacity .2s ease;
+    -webkit-transition: opacity .2s ease;
+  }
+  
+  header a:hover {
+    opacity: 0.6;
+  }
+  
+  header a.hide {
+    display: none;
+  }
+  
+  header div {
+    display: none;
+    height: 76px;
+  }
+  
+  #mobile-menu-btn {
+    display: none; 
+    position: fixed;
+    z-index: 98;
+    top: 16px;
+    left: 50%;
+    width: 22px;
+    height: 13px;
+    padding: 15.5px 11px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.02),0px 0px 20px rgba(0,0,0,0.15);
+  }
+  /* Кнопка меню */
+  #mobile-menu-btn i {
+    background-color: #fff;
+    border-radius: 2px;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+  }
+  
+  #mobile-menu-btn i:nth-child(1) {
+    -webkit-animation: outT 0.6s backwards;
+    animation: outT 0.6s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+  }
+  
+  #mobile-menu-btn i:nth-child(2) {
+    margin: 5px 0;
+    -webkit-animation: outM 0.6s backwards;
+    animation: outM 0.6s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+  }
+  
+  #mobile-menu-btn i:nth-child(3) {
+    -webkit-animation: outBtm 0.6s backwards;
+    animation: outBtm 0.6s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+  }
+  
+  #mobile-menu-btn.show i:nth-child(1) {
+    -webkit-animation: inT 0.6s forwards;
+    animation: inT 0.6s forwards;
+  }
+  
+  #mobile-menu-btn.show i:nth-child(2) {
+    -webkit-animation: inM 0.6s forwards;
+    animation: inM 0.6s forwards;
+  }
+  
+  #mobile-menu-btn.show i:nth-child(3) {
+    -webkit-animation: inBtm 0.6s forwards;
+    animation: inBtm 0.6s forwards;
+  }
+  
+  @-webkit-keyframes inT { 0% {-webkit-transform: translateY(0px) rotate(0deg);} 50% {-webkit-transform: translateY(6px) rotate(0deg);} 100% {-webkit-transform: translateY(6px) rotate(135deg);}}
+  @keyframes inT {0% {transform: translateY(0px) rotate(0deg);} 50% {transform: translateY(6px) rotate(0deg);} 100% {transform: translateY(6px) rotate(135deg);}}
+  @-webkit-keyframes outT {0% {-webkit-transform: translateY(0px) rotate(0deg);} 50% {-webkit-transform: translateY(6px) rotate(0deg);}100% {-webkit-transform: translateY(6px) rotate(135deg);}}
+  @keyframes outT {0% {transform: translateY(0px) rotate(0deg);} 50% {transform: translateY(6px) rotate(0deg);} 100% {transform: translateY(6px) rotate(135deg);}}
+  @-webkit-keyframes inM { 50%{-webkit-transform: rotate(0deg);} 100% {-webkit-transform: rotate(45deg);}}
+  @keyframes inM { 50%{transform: rotate(0deg);} 100% {transform: rotate(45deg);}}
+  @-webkit-keyframes outM { 50% {-webkit-transform: rotate(0deg);} 100% {-webkit-transform: rotate(45deg);}}
+  @keyframes outM { 50% {transform: rotate(0deg);} 100% {transform: rotate(45deg);}}
+  @-webkit-keyframes inBtm {0% {-webkit-transform: translateY(0px) rotate(0deg);}50% {-webkit-transform: translateY(-6px) rotate(0deg);}100% {-webkit-transform: translateY(-6px) rotate(135deg);}}
+  @keyframes inBtm {0% {transform: translateY(0px) rotate(0deg);}50% {transform: translateY(-6px) rotate(0deg);}100% {transform: translateY(-6px) rotate(135deg);}}
+  @-webkit-keyframes outBtm {0% {-webkit-transform: translateY(0px) rotate(0deg);}50% {-webkit-transform: translateY(-6px) rotate(0deg);}100% {-webkit-transform: translateY(-6px) rotate(135deg);}}
+  @keyframes outBtm {0% {transform: translateY(0px) rotate(0deg);}50% {transform: translateY(-6px) rotate(0deg);}100% {transform: translateY(-6px) rotate(135deg);}}
+  
+  #mobile-menu-btn.hide {
+    pointer-events: none;
+  }
+
+/* Информация */
+#main-photo-filler 
+{
+    position: relative;
+    height: 100vh;
+}
+
+#main-photo-wrapper 
+{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+#main-photo
+{
+    background-image: url(../resources/images/slider/1.jpg);
+}
+#main-photo-wrapper #main-photo 
+{
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-position: center;
+}
+#main-photo #information
+{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-family: 'Marck Script';
+    text-shadow: #00000056 2px 0px 2px, #00000056 0px 2px 2px, #00000056 0px -2px 2px, #00000056 -2px 0px 2px;
+}
+#main-photo #information #names
+{
+    font-size: 8vw;
+    font-style: italic;
+}
+#main-photo #information #date, #main-photo #information #hashtag
+{
+    font-size: 2.5vw;
+}
+
+/* Контент */
+#content
+{
+    position: relative;
+    z-index: 2;
+}
+/* Таймер */
+#timerBlock
+{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    width: 100%;
+}
+#timerBlock > div
+{
+    height: 8vw;
+}
+#timerBlock #captionBlock
+{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+    width: 30%;
+    background: #4a4a4a;
+    color: white;
+}
+#timerBlock #icon
+{
+    display: block;
+    width: 4.5vw;
+    height: 4.5vw;
+    margin-right: 2vw;
+    margin-left: -2vw;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    opacity: 1;
+}
+#timerBlock #icon svg
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+#timerBlock #caption
+{
+    text-align: center;
+}
+#timerBlock #caption p, #timerBlock #caption span
+{
+    font-family: 'Cormorant Garamond', serif;
+}
+#timerBlock #caption #secondLine
+{
+    margin: 0;
+    font-size: 2.8vw;
+}
+#timerBlock #caption #firstLine
+{
+    font-size: 1.8vw;
+}
+#timerBlock #timer
+{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    align-items: center;
+    -webkit-align-items: center;
+    width: 70%;
+    color: white;
+}
+#timerBlock #timer > div
+{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+    flex-direction: column;
+    width: 25%;
+    height: 100%;
+}
+#timerBlock #timer > div:nth-child(2n)
+{
+    background: #99e49a;
+}
+#timerBlock #timer span
+{
+    font-family: 'Cormorant Garamond', serif;
+    text-transform: capitalize;
+}
+#timerBlock #timer p
+{
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    font-size: 3vw;
+}
+#timerBlock #timer span
+{
+    font-size: 2vw;
+}
+
+/* Наша история */
+#loveStory, #weddingProgramm
+{
+    width: 100%;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Cormorant Garamond', serif;
+    color: #a4a4a4;
+}
+#ls-events-prev-buttton, #ls-events-next-buttton
+{
+    width: 10vw;
+    height: 100%;
+    cursor: pointer;
+    visibility: hidden;
+}
+#ls-events-prev-buttton > svg
+{
+  transform: rotateZ(180deg);
+}
+#ls-events-prev-buttton > svg, #ls-events-next-buttton > svg
+{
+  fill: #4a4a4a4d;
+}
+#ls-events-prev-buttton:hover > svg, #ls-events-next-buttton:hover > svg
+{
+  fill: #4a4a4a;
+}
+#loveStory .events-descr-block .event-descr
+{
+    cursor: pointer;
+}
+
+/* События */
+.events-block
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3.2vw;
+    margin-bottom: 5vw;
+}
+.events-full-descr-block, .events-descr-block
+{
+    width: 48vw;
+    min-height: 70vw; /* Задавать из js...? */
+}
+.events-full-descr-block
+{
+  display: block;
+  position: relative;
+}
+.events-descr-block
+{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -webkit-flex-align: center;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+}
+.event-descr
+{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-grow: 1;
+    width: 100%;
+    min-height: 4vw;
+    cursor: default;
+}
+.event-time-block
+{
+    display: block;
+    position: relative;
+    margin-right: 2.5vw;
+}
+.event-text-block
+{
+    flex-grow: 1;
+    flex: 1;
+    text-align: left;
+}
+.event-date
+{
+    position: relative;
+    display: block;
+    z-index: 2;
+    color: #ffffff;
+    background-color: #89d08a;
+    border-color: #89d08a;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 1.25vw;
+    padding: .5vw 0 .4vw;
+    border-radius: 100px;
+    width: 7vw;
+    min-width: 7vw;
+    text-align: center;
+    transition: .2s ease;
+    -webkit-transition: .2s ease;
+}
+.event-dotts
+{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 0;
+    border-left: 2px dashed #e2e2e2;
+}
+.event-descr:last-child .event-dotts 
+{
+  display: none;
+}
+.event-full-descr
+{
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: flex;
+  display: -webkit-box;
+  display: -webkit-flex;
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1.5s, visibility 1.5s;
+}
+.event-full-descr.selected
+{
+  top: unset;
+  left: unset;
+  position: relative;
+  z-index: 2;
+  visibility: inherit;
+  opacity: 1;
+  transition: opacity 1.5s, visibility 1.5s;
+}
+.event-full-descr-content
+{
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    -webkit-flex-align: center;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    align-self: center;
+    -webkit-align-self: center;
+    width: 100%;
+}
+.event-full-descr-content img
+{
+    position: relative;
+    z-index: 1;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 30vw;
+    min-height: 1px;
+    margin-bottom: 2.4vw;
+    box-shadow: 0vw 1vw 4vw rgba(0, 0, 0, 0.1);
+}
+.event-full-descr-content .event-caption
+{
+    width: auto;
+    font-size: 1.7vw;
+    line-height: 1.5;
+    text-transform: uppercase;
+    padding-bottom: 1vw;
+    position: relative;
+    max-width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.event-full-descr-content .event-descr
+{
+  display: block;
+  width: 90%;
+  text-align: center;
+  color: #999;
+  cursor: default;
+  font-size: 1.5vw;
+  margin-top: 1vw;
+  line-height: 1.4;
+}
+.event-date-mobile
+{
+    display: none;
+}
+.event-text-block .event-caption
+{
+  display: block;
+  color: #727475;
+  font-size: 2vw;
+  margin-top: .1vw;
+  line-height: 1.2;
+  transition: .2s ease;
+  -webkit-transition: .2s ease;
+}
+.event-text-block .event-descr
+{
+    display: block;
+    display: -webkit-box;
+    position: relative;
+    width: 100%;
+    margin: .5vw 0 1.2vw;
+    color: #999;
+    font-size: 1.5vw;
+}
+.ls-event-description-link, .program-text-description {
+  display: block;
+  display: -webkit-box;
+  position: relative;
+  width: 100%;
+  margin: .5vw 0 1.2vw;
+  color: #999;
+  font-size: 1.1vw;
+  font-family: 'Charis', sans-serif;
+}
+.event-descr:hover .event-date,
+.event-descr.selected .event-date
+{
+    background: #fafafa;
+}
+.event-descr:hover .event-caption, .event-descr:hover .event-date,
+.event-descr.selected .event-caption, .event-descr.selected .event-date
+{
+    color: #89d08a;
+}
+
+/* Общие стили заголовков */
+#ls-header, #ls-header-desc, .event-full-descr-content .event-caption,
+#program-header, #program-header-desc,
+#wedding-style-header 
+{
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #a4a4a4;
+  cursor: default;
+}
+#ls-header, #program-header
+{
+  margin-top: 4.4vw;
+  font-size: 2.6vw;
+  text-transform: uppercase;
+}
+#ls-header-desc, #program-header-desc{
+  margin-top: 1vw;
+  font-size: 2.2vw;
+}
+
+/* Галлерея */
+#galleryWrapper
+{
+    display: flex;
+    align-items: center;
+}
+#gallery
+{
+    display: grid;
+    grid-template-rows: repeat(2, 25vw);
+    z-index: 2;
+}
+#gallery > div 
+{
+  transition: transform 0.5s;
+  background-position: center;
+  background-size: cover;
+
+  /*background: green;
+  border: 1px solid black;*/
+}
+
+#scrollLeftButton, #scrollRightButton
+{
+    position: absolute;
+    width: 74px;
+    height: 74px;
+    background: #ffffffc2;
+    z-index: 3;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+#scrollLeftButton
+{
+    transform: translateX(-40px);
+}
+#scrollRightButton
+{
+    right: 0;
+    transform: translateX(40px);
+}
+#scrollLeftButton.hidden 
+{
+    transform: translateX(-80px);
+}
+#scrollRightButton.hidden
+{
+    transform: translateX(80px);
+}
+#scrollRightButton:before, #scrollLeftButton:before,
+#scrollRightButton:after, #scrollLeftButton:after
+{
+    position: absolute;
+    display: block;
+    content: "";
+    width: 12px;
+    background: #89d08a;
+    z-index: 4;
+    height: 2px;
+    top: 37px;
+    border-radius: 5px;
+}
+#scrollLeftButton:before, #scrollLeftButton:after
+{
+    right: 16px;
+}
+#scrollRightButton:before, #scrollRightButton:after
+{
+    left: 16px;
+}
+#scrollLeftButton:before
+{
+    transform: rotate(45deg) translate(2px, 3.5px);
+}
+#scrollLeftButton:after
+{
+    transform: rotate(-45deg) translate(2px, -3.5px);
+}
+#scrollRightButton:before
+{
+    transform: rotate(-135deg) translate(3.5px, 2px);;
+}
+#scrollRightButton:after
+{
+    transform: rotate(-45deg) translate(-3.5px, 2px);
+}
+
+#fullScreenGallery
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000000e6;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#fullScreenGallery.show
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+.closeImageButton, .nextImageButton, .prevImageButton
+{
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+.closeImageButton:before,
+.nextImageButton:before,
+.prevImageButton:before,
+.closeImageButton:after,
+.nextImageButton:after,
+.prevImageButton:after
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 98%;
+    background-color: white;
+    border-radius: 5px;
+}
+.closeImageButton:before,
+.nextImageButton:before,
+.prevImageButton:before
+{
+    transform: rotate(45deg);
+}
+.closeImageButton:after,
+.nextImageButton:after,
+.prevImageButton:after
+{
+    transform: rotate(-45deg);
+}
+
+#closeImageButtonWrapper,
+#prevImageButtonWrapper,
+#nextImageButtonWrapper
+{
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    z-index: 101;
+}
+#closeImageButtonWrapper
+{
+    top: 5%;
+    right: 5%;
+}
+#prevImageButtonWrapper
+{
+    left: 5%;
+    top: calc(50% - 50px);
+}
+#prevImageButtonWrapper > .prevImageButton:before,
+#prevImageButtonWrapper > .prevImageButton:after
+{
+    transform-origin: 0 50%;
+}
+#nextImageButtonWrapper
+{
+    right: 5%;
+    top: calc(50% - 50px);
+}
+#nextImageButtonWrapper > .nextImageButton:before,
+#nextImageButtonWrapper > .nextImageButton:after
+{
+    transform-origin: 98% 50%;
+}
+#prevImageButtonWrapper, #nextImageButtonWrapper 
+{
+    width: 35px;
+}
+#nextImageButtonWrapper 
+{
+    margin-right: 7px;
+}
+#imageWrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+#imageWrapper > #imageContent
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    height: 80%;
+}
+#imageWrapper img.hideToLeft
+{
+    animation: hideToLeft 1s ease;
+}
+#imageWrapper img.hideToRight
+{
+    animation: hideToLeft 1s ease;
+    animation-direction: reverse;
+}
+
+#imageWrapper > #imageContent > img
+{
+    max-width: 100%;
+    max-height: 100%;
+}
+#imageContent > #preloader
+{
+    padding-bottom: 60px;
+    animation: blink 2s infinite;
+}
+#imageContent > #preloader > svg
+{
+    width: 100px;
+    height: 100px;
+}
+@keyframes rotate
+{
+    100% { transform: rotate(360deg); }
+}
+@keyframes blink
+{
+    0% { opacity: 1 }
+    50% { opacity: 0.25 }
+    100% { opacity: 1 }
+}
+
+@keyframes hideToLeft
+{
+    0% 
+    { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+    25% 
+    {
+        transform: translateX(-50vw);
+        opacity: 0;
+    }
+    50% 
+    {
+        transform: translateX(50vw);
+        opacity: 0;
+    }
+    100% 
+    {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes hideToRight
+{
+    0% 
+    { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+    25% 
+    {
+        transform: translateX(50vw);
+        opacity: 0;
+    }
+    50% 
+    {
+        transform: translateX(-50vw);
+        opacity: 0;
+    }
+    100% 
+    {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Карта: */
+#map
+{
+    width: 100%;
+    height: 50vw;
+}
+#map .gm-style-mtc, #map .gm-svpc, #map .gm-fullscreen-control
+{
+    display: none;
+}
+#map .gm-control-active {
+    background: #87ce88 !important;
+    border-radius: 50%;
+}
+
+.gm-bundled-control > div:first-child div, .gm-style-cc div
+{
+    background: none !important;
+    box-shadow: none !important;
+}
+.gm-bundled-control > div:first-child > div > div 
+{
+    height: 8px !important;
+    /*height: 1vw !important;*/
+}
+
+/* Экран до 1024px */
+@media screen and (max-width: 1024px) {
+
+    svg path, svg ellipse, .ls-event-link-date, #map-header, .program-time, .ls-events-text-header, .program-text-header,
+    .friends-links div, .gallery-view-text, .friends-photos-wrapper, #program-bg, #program-bg.show, header a,
+    .countdown-bg, .countdown-bg :nth-child(2n) {
+      -webkit-transition: 0s ease;
+      -moz-transition: 0s ease;
+      -o-transition: 0s ease;
+      transition: 0s ease;
+    }
+  
+    header
+    {
+      z-index: 96;
+    }
+
+    .gift-header, .gift-lb {
+      -webkit-transition: .4s ease;
+      -moz-transition: .4s ease;
+      -o-transition: .4s ease;
+      transition: .4s ease;
+    }
+  
+    #to-main-link {
+      font-size: 20px;
+      min-width: 100px;
+      padding: 10px 35px;
+      margin: 20px auto 0;
+    }
+  
+    #sound-approve-header p {
+      font-size: 100px;
+    }
+  
+    #timerBlock #timer p {
+      font-size: 34px;
+    }
+  
+    .program-hover-title, .friends-photo-text, .gallery-view-text {
+      font-size: 30px;
+    }
+  
+    #ls-header, #program-header, #fr-header, #sound-approve-header h3 {
+      font-size: 28px;
+    }
+  
+    .gift-header {
+      font-size: 26px;
+    }
+  
+    #timerBlock #captionBlock p,
+    #gallery-header, #wl-header, .map-text-header, 
+    #gallery-grid6x3 #gallery-header {
+      font-size: 38px !important;
+    }
+  
+    #groom-fullname, #bride-fullname {
+      font-size: 22px;
+    }
+  
+    .events-full-descr-block .event-caption, .friend-info-name, .friend-info-surname, #no-wish-top-text, #wishlist-names, .hint-header a {
+      font-size: 20px;
+    }
+    .events-descr-block .event-caption
+    {
+        font-size: 22px;
+    }
+    .events-descr-block .event-descr
+    {
+        font-size: 18px;
+    }
+    .events-descr-block .event-date
+    {
+        font-size: 15px;
+        min-width: 100px;
+    }
+  
+    .ls-events-header-link, .program-text-header, #footer-names, .gift-link-header, #sound-approve-btns {
+      font-size: 18px;
+    }
+  
+    #timerBlock span, .couple-header,
+    #ls-header-desc,
+    #program-header-desc, 
+    #fr-header-desc, #wl-desc, #gallery-subheader, #gallery-hashtag, .friends-links div, .map-text, 
+    .countdown-bg div span, #gallery-grid6x3 #gallery-subheader, #gallery-grid6x3 #gallery-hashtag, #sound-approve-header {
+      font-size: 21px !important;
+    }
+  
+    header a {
+      font-size: 20px;
+    }
+  
+    #copyright {
+      font-size: 12px;
+    }
+  
+    #prldr-names svg {
+      width: 80px;
+    }
+  
+    #prldr-dots {
+      font-size: 40px;
+      bottom: 20px;
+    }
+  
+    header {
+      position: fixed;
+      height: 100vh;
+      width: 35vw;
+      left: -35vw;
+      flex-direction: column;
+      -webkit-flex-direction: column;
+      background-color: rgba(20,20,20,0.98);
+      /* background-image: url(/img/noise.png); */
+      background-position: center;
+      background-size: auto;
+      background-repeat: repeat;
+    }
+  
+    header.ready {
+      transform: translateX(0vw) scale(1);
+      -webkit-transform: translateX(0vw) scale(1);
+    }
+  
+    header.ready.show {
+      transform: translateX(34vw) scale(1);
+      -webkit-transform: translateX(34vw) scale(1);
+    }
+  
+    header :nth-child(2n) {
+      background-color: rgba(100, 100, 100, 0.02);
+    }
+  
+    header a {
+      height: auto;
+      flex-grow: 1;
+      width: 100%;
+      padding: 0;
+    }
+  
+    header div, #mobile-menu-btn {
+      display: block;
+    }
+  
+    #icon-scroll, #prldr-names div, .map-header-svg {
+      display: none;
+    }
+  
+    header div {
+      width: 100% !important;
+    }
+
+    #timerBlock
+    {
+        flex-direction: column;
+        -webkit-flex-direction: column;
+    }
+    #timerBlock #captionBlock
+    {
+        width: 100%;
+        padding: 20px 0;
+    }
+    #timerBlock #timer
+    {
+        width: 100%;
+        height: 95px;
+    }
+  
+    .countdown-block {
+      flex-direction: column;
+      -webkit-flex-direction: column;
+    }
+  
+    #CountdowntextBefore, #CountdowntextAfter {
+      padding: 32px 0;
+      width: 100%;
+    }
+  
+    #CountdowntextBefore span, #CountdowntextAfter span, #CountdowntextBefore p, #CountdowntextAfter p {
+      text-align: center;
+    }
+  
+    #timerBlock #icon {
+      width: 46px;
+      height: 46px;
+      margin-right: 20px;
+      margin-left: -20px;
+    }
+  
+    .countdown {
+      width: 100%;
+      height: 100px;
+      padding-bottom: 26px;
+    }
+  
+    .countdown-bg {
+      width: 100%;
+      height: 126px;
+    }
+  
+    .countdown-bg div span {
+      margin-top: 36px;
+    }
+  
+    #about-couple-content {
+      min-height: 80vh;
+      padding: 0 2%;
+    }
+  
+    #lovestory, #program, #friends {
+      min-height: 20vh;
+    }
+  
+    #about-groom-block, #about-bride-block {
+      width: 40%;
+      margin: 60px 0;
+      -webkit-transition: 0s ease;
+      -moz-transition: 0s ease;
+      -o-transition: 0s ease;
+      transition: 0s ease;
+    }
+  
+    #about-groom-block:hover, #about-bride-block:hover {
+      background-color: rgba(255,255,255,0.9);
+    }
+  
+    .couple-header, #ls-header-desc, #program-header-desc, #fr-header-desc, #wl-desc {
+      margin-top: 8px;
+    }
+  
+    .groom-icon, .bride-icon, .groom-icon-gay, .bride-icon-gay {
+      width: 20px;
+      height: 20px;
+    }
+  
+    .couple-social-links a svg, .friends-social a svg {
+      width: 36px;
+      height: 36px;
+      margin: 0 2px;
+    }
+    
+    #gallery
+    {
+        grid-template-rows: repeat(2, 33.33333vw);
+    }
+  
+    /* #ls-header, #program-header, #fr-header {
+      margin-top: 50px;
+    } */
+
+    .events-full-descr-block .event-descr
+    {
+        font-size: 18px;
+    }
+  
+    #ls-events-block, #program-events-block, #friends-block-wrapper {
+      margin-top: 40px;
+      margin-bottom: 50px;
+    }
+  
+    .ls-event-link, .program-element-block {
+      min-height: 60px;
+    }
+  
+    .ls-event-link-date, .program-time {
+      padding: 6px 0 5px;
+      width: 100px;
+      min-width: 100px;
+      border-radius: 40px;
+    }
+  
+    .ls-event-description-link, .program-text-description {
+      height: 50px;
+      margin: 8px 0 20px;
+    }
+  
+    .ls-event img, .LSIframe {
+      margin-bottom: 30px;
+    }
+  
+    .LSIframe img {
+      margin: 0;
+    }
+  
+    .LSIframe svg {
+      opacity: .94;
+      width: 50px;
+      height: 50px;
+      transition: 0s ease;
+      -webkit-transition: 0s ease;
+    }
+  
+    .ls-event-header {
+      padding-bottom: 10px;
+    }
+  
+    .ls-event-description, #wedding-style-description, .friend-description {
+      margin-top: 10px;
+    }
+  
+    .gallery-photo:hover > .gallery-thumpbnail, .friends-photo-block:hover > .friends-photos-wrapper, 
+    #program-bg.show, .gallery-thumpbnail {
+      transform: scale(1) rotate(0deg);
+      -webkit-transform: scale(1) rotate(0deg);
+    }
+  
+    .gallery-view-text, .gallery-photo:before, .friends-photo-text, .friends-photo-toner, .program-hover-title, #program-toner,
+    #sound-approve-btns span svg {
+      display: none;
+    }
+  
+    #gallery-grid4x2, #gallery-grid5x2 {
+      height: 66.6666vw;
+    }
+  
+    #gallery-grid5x3, #gallery-grid6x3 {
+      height: 100vw;
+    }
+  
+    #gallery-grid4x2 .gallery-photo, #gallery-grid5x2 .gallery-photo, #gallery-grid5x3 .gallery-photo, 
+    #gallery-grid6x3 .gallery-photo {
+      height: 33.3333vw;
+    }
+  
+    #gallery-subheader, #gallery-hashtag {
+      margin: 10px 0;
+    }
+  
+    #gallery-icon, #gallery-grid6x3 #gallery-icon {
+      width: 20px;
+      height: 20px;
+      margin-top: 4px;
+      margin-bottom: -10px;
+    }
+  
+    #gallery-header-text, #gallery-header-info {
+      padding: 16px;
+    }
+  
+    .friends-photos-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  
+    .friends-photo-block {
+      height: 28vw;
+    }
+  
+    .friends-info-block {
+      transform: translateY(20px);
+      -webkit-transform: translateY(20px);
+    }
+  
+    .friends-info-block.active {
+      transform: translateY(0px);
+      -webkit-transform: translateY(0px);
+    }
+  
+    .friends-info-block.active.fr-info-move, .friends-info-block.fr-info-move {
+      transform: translateY(-20px);
+      -webkit-transform: translateY(-20px);
+    }
+  
+    .friends-links div {
+      padding: 16px 6px;
+    }
+  
+    .friend-info-full-name {
+      padding-bottom: 10px;
+      margin-top: 24px;
+    }
+  
+    .wishlist-btn, .photo-btn {
+      width: 60px;
+      height: 60px;
+      opacity: .9;
+    }
+  
+    .wishlist-btn::after, .wishlist-btn::before, .photo-btn::after, .photo-btn::before {
+      width: 10px;
+    }
+  
+    #wishlist-next::after, #wishlist-next::before, #photo-next::after, #photo-next::before {
+      top: 30px;
+      left: 14px;
+    }
+  
+    #wishlist-prev::after, #wishlist-prev::before, #photo-prev::after, #photo-prev::before {
+      top: 30px;
+      left: 36px;
+    }
+  
+    .gift-block {
+      padding: 32px;
+    }
+  
+    #wishlist-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 18px;
+    }
+  
+    #wishlist-text {
+      margin-right: 18px;
+    }
+  
+    .gift-lb {
+      padding: 20px 30px;
+    }
+  
+    .gift-link-desc {
+      max-height: 70px;
+    }
+  
+    .event-link-green:hover > .program-time-block > .program-time {
+      background-color: #88cfcd;
+      border-color: #88cfcd;
+      color: white;
+    }
+  
+    .event-link-pink:hover > .program-time-block > .program-time  {
+      background-color: #dd90c3;
+      border-color: #dd90c3;
+      color: white;
+    }
+  
+    .event-link-brown:hover > .program-time-block > .program-time {
+      background-color: #c7b393;
+      border-color: #c7b393;
+      color: white;
+    }
+  
+    .event-link-peach:hover > .program-time-block > .program-time {
+      background-color: #fab8ae;
+      border-color: #fab8ae;
+      color: white;
+    }
+  
+    .event-link-sky:hover > .program-time-block > .program-time {
+      background-color: #7bd0ff;
+      border-color: #7bd0ff;
+      color: white;
+    }
+  
+    .event-link-green:hover > .program-text-block > .program-text-header,
+    .event-link-pink:hover > .program-text-block > .program-text-header,
+    .event-link-brown:hover > .program-text-block > .program-text-header,
+    .event-link-peach:hover > .program-text-block > .program-text-header,
+    .event-link-sky:hover > .program-text-block > .program-text-header {
+      color: #727475;
+    }
+  
+    #wedding-style-header {
+      font-size: 20px;
+      margin-top: 20px;
+      padding-bottom: 10px;
+    }
+  
+    .map-header-block {
+      padding: 22px;
+      text-align: center;
+    }
+  
+    footer {
+      padding: 28px 0;
+      margin-top: -1px;
+    }
+  
+    #FooterHeart {
+      width: 16px;
+      height: 16px;
+      margin: 0 10px;
+    }
+  
+    #copyright {
+      margin-top: 16px;
+    }
+  
+    #sound-approve-header h3 {
+      margin: 6px 0;
+    }
+  
+    #sound-approve-header p {
+      top: -30px;
+    }
+  
+    #sound-approve-header div {
+      width: 60%;
+    }
+  
+    #sound-approve-btns {
+      margin: 20px auto 0;
+    }
+  
+    #sound-approve-btns span {
+      margin: 0 4px;
+    }
+  
+  }
+  /* Экран до 800px */
+  @media screen and (max-width: 800px) {
+    .underline-text:before
+    {
+        width: unset;
+    }
+  
+    header {
+      width: 100vw;
+      left: -100vw;
+    }
+  
+    header.ready.show {
+      transform: translateX(100vw) scale(1);
+      -webkit-transform: translateX(100vw) scale(1);
+    }
+
+    #loveStory .events-descr-block
+    {
+        display: none;
+    }
+    #loveStory .events-full-descr-block
+    {
+        width: 75vw;
+        min-height: 655px;
+    }
+
+    /* Программа дня */
+    #weddingProgramm .events-block
+    {
+        flex-direction: column;
+    }
+    #weddingProgramm .events-full-descr-block, .events-descr-block
+    {
+        width: 100%;
+    }
+    #weddingProgramm .event-descr
+    {
+        flex-direction: column;
+        align-items: center;
+    }
+    #weddingProgramm .event-text-block
+    {
+        text-align: center;
+    }
+
+  
+    /* #about-couple-content, #about-couple-content.straight {
+      min-height: 40vh;
+      padding: 10px 0;
+    }
+  
+    #about-couple-content.reverse {
+      flex-wrap: wrap-reverse;
+      -webkit-flex-wrap: wrap-reverse;
+    }
+  
+    #about-groom-block, #about-bride-block {
+      width: 96%;
+      margin: 10px 0;
+      padding: 12vw 8vw 10vw;
+    }
+  
+    #friends-block-wrapper, #friends-block-wrapper.straight, #program-events-block, #program-events-block.straight {
+      flex-direction: column;
+      -webkit-flex-direction: column;
+      margin-top: 30px;
+      margin-bottom: 0px;
+    }
+  
+    #friends-block-wrapper.reverse, #program-events-block.reverse {
+      flex-direction: column-reverse;
+      -webkit-flex-direction: column-reverse;
+    }
+  
+    #groom-friends-block, #bride-friends-block, #wedding-style-block, #programs-block {
+      margin-bottom: 40px;
+      margin-top: -1px;
+    }
+  
+    .friends-links {
+      overflow: hidden;
+    }
+  
+    .friends-links div {
+      margin: -1px;
+    }
+  
+    #sound-approve-header div {
+      width: 80%;
+    }
+  
+    #sound-approve-btns span {
+      padding: 0 10px;
+    } */
+    
+    #ls-events-prev-buttton, #ls-events-next-buttton
+    {
+        visibility: visible;
+    }
+  
+    #ls-events-wrapper, #wedding-style-block, #programs-block {
+      width: 100%;
+    }
+  
+    .event-date-mobile {
+      display: block;
+      width: auto;
+      font-size: 17px;
+      padding: 6px 0;
+      text-align: center;
+      color: #a4a4a4;
+      cursor: default;
+      border-bottom-width: 1px;
+      border-top-width: 1px;
+      border-right-width: 0px;
+      border-left-width: 0px;
+      border-style: solid;
+      border-color: #ddd;
+      -moz-border-image: -moz-linear-gradient(right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+      -webkit-border-image: -webkit-linear-gradient(right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+      border-image: linear-gradient(to right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
+      border-image-slice: 1 0 1 0;
+    }
+  
+    #ls-events-links-block, .ls-event-header:before, #groom-fullname-footer, #bride-fullname-footer {
+      display: none;
+    }
+  
+    .event-full-descr-content img {
+      width: 80%;
+      height: auto;
+      max-width: 100%;
+      max-height: unset;
+    }
+  
+    #ls-mobile-buttons {
+      position: relative;
+      display: flex;
+      display: -webkit-box;
+      display: -webkit-flex;
+      align-items: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -webkit-flex-align: center;
+      align-items: center;
+      justify-content: center;
+      -webkit-justify-content: center;
+      margin-bottom: 50px;
+    }
+  
+    #ls-mobile-buttons div {
+      display: block;
+      position: relative;
+      width: auto;
+      margin: 0 4px;
+      color: #999;
+      text-transform: lowercase;
+      font-size: 16px;
+    }
+  
+    #ls-mobile-buttons div:hover {
+      color: #b4b4b4;
+    }
+  
+    #ls-mobile-buttons div:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 18px;
+      height: 1px;
+      border-radius: 2px;
+    }
+  
+    #prev-story:before {
+      left: -26px;
+    }
+  
+    #next-story:before {
+      right: -26px;
+    }
+  
+    #ls-mobile-buttons div:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-top-width: 1px;
+      border-bottom-width: 0px;
+      border-style: solid;
+    }
+  
+    #prev-story:after {
+      left: -26px;
+      border-left-width: 1px;
+      border-right-width: 0px;
+      transform: translateY(-3px) rotate(-45deg);
+      -webkit-transform: translateY(-3px) rotate(-45deg);
+    }
+  
+    #next-story:after {
+      right: -26px;
+      border-left-width: 1px;
+      border-right-width: 0px;
+      transform: translateY(-3px) rotate(-225deg);
+      -webkit-transform: translateY(-3px) rotate(-225deg);
+    }
+
+  
+    .friends-photo-block {
+      height: 40vw;
+    }
+  
+    #program-images {
+      min-height: 60vw;
+    }
+  
+    .program-element-block {
+      pointer-events: none;
+    }
+  
+    .program-element-block, 
+    #program-events-block.straight .program-element-block, 
+    #program-events-block.reverse .program-element-block {
+      flex-direction: column;
+      -webkit-flex-direction: column;
+    }
+  
+    .program-text-block, 
+    #program-events-block.straight .program-text-block, 
+    #program-events-block.reverse .program-text-block {
+      text-align: center;
+    }
+  
+    .program-time-block, 
+    #program-events-block.straight .program-time-block, 
+    #program-events-block.reverse .program-time-block {
+      margin: 0;
+    }
+  
+    .program-time {
+      margin: 0 auto;
+    }
+  
+    .program-dotts, #programs-block :last-child .program-dotts {
+      position: relative;
+      display: block;
+      height: 40px;
+      margin: 0 auto 20px;
+      top: unset;
+      left: unset;
+    }
+  
+    .program-text-block:after {
+      content: '';
+      position: relative;
+      display: block;
+      height: 40px;
+      margin: 0 auto;
+      width: 0;
+      border-left: 2px dashed #e2e2e2;
+    }
+  
+    #programs-block :last-child .program-text-block:after {
+      display: none;
+    }
+  
+    .program-text-header {
+      margin: 0;
+    }
+  
+    .program-text-description {
+      display: block;
+      height: auto;
+      max-height: unset;
+    }
+  
+  }

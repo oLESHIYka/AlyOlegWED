@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script>
+            function initMap()
+            {
+                console.log('Ready to init map!');
+                const coordinates = { lat: 55.775012, lng: 37.633113 }
+                
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: coordinates,
+                    zoom: 15,
+                    scrollwheel: false
+                });
+                
+                var marker = new google.maps.Marker({
+                    position: coordinates,
+                    map: map
+                });
+                
+                $.getJSON("resources/map_styles.json", function(data) {
+                    console.log('styles loaded:');
+                    console.log(data);
+                    map.setOptions({styles: data});
+                });
+            }
+        </script>
+        
+        <style>
+            #map
+            {
+                width: 100%;
+                height: 50vw;
+            }
+            #map .gm-style-mtc, #map .gm-svpc, #map .gm-fullscreen-control
+            {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map">
+            <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    
+        </div>
+        
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD71v94hZRjhA7RirTbszY5aIKzsmZb78&callback=initMap"></script>
+    </body>
+</html>
