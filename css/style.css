@@ -374,7 +374,7 @@ header {
 #ls-events-prev-buttton, #ls-events-next-buttton
 {
     width: 10vw;
-    height: 100%;
+    /* height: 100%; */
     cursor: pointer;
     visibility: hidden;
 }
@@ -477,7 +477,7 @@ header {
     width: 0;
     border-left: 2px dashed #e2e2e2;
 }
-.event-descr:last-child .event-dotts 
+.event-descr:last-child .event-dotts
 {
   display: none;
 }
@@ -783,7 +783,7 @@ header {
 #prevImageButtonWrapper
 {
     left: 5%;
-    top: calc(50% - 50px);
+    top: calc(50% - 25px);
 }
 #prevImageButtonWrapper > .prevImageButton:before,
 #prevImageButtonWrapper > .prevImageButton:after
@@ -793,7 +793,7 @@ header {
 #nextImageButtonWrapper
 {
     right: 5%;
-    top: calc(50% - 50px);
+    top: calc(50% - 25px);
 }
 #nextImageButtonWrapper > .nextImageButton:before,
 #nextImageButtonWrapper > .nextImageButton:after
@@ -820,8 +820,8 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 75%;
-    height: 80%;
+    width: calc(80% - 70px);
+    height: 100%;
 }
 #imageWrapper img.hideToLeft
 {
@@ -836,7 +836,7 @@ header {
 #imageWrapper > #imageContent > img
 {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 80%;
 }
 #imageContent > #preloader
 {
@@ -1096,7 +1096,7 @@ header {
         width: 100%;
         padding: 20px 0;
     }
-    #timerBlock #timer
+    #timerBlock #timer, #timerBlock #captionBlock
     {
         width: 100%;
         height: 95px;
@@ -1455,6 +1455,32 @@ header {
       -webkit-transform: translateX(100vw) scale(1);
     }
 
+    #main-photo #information #names
+    {
+        font-size: 35px;
+    }
+    #main-photo #information #date, #main-photo #information #hashtag
+    {
+        font-size: 25px;
+    }
+    
+    #timerBlock #captionBlock p
+    {
+        font-size: 30px !important;
+    }
+    #timerBlock #timer p
+    {
+        font-size: 30px;
+    }
+    #timerBlock #captionBlock
+    {
+        padding: 0;
+    }
+    #timerBlock > div
+    {
+        height: 25vw;
+    }
+
     #loveStory .events-descr-block
     {
         display: none;
@@ -1499,6 +1525,16 @@ header {
     #weddingProgramm .event-descr:first-child .event-dotts:first-child
     {
         display: none;
+    }
+    #weddingProgramm .event-descr:last-child .event-dotts
+    {
+        display: initial;
+    }
+
+    /* Карта */
+    #map
+    {
+        height: 75vw;
     }
 
   
