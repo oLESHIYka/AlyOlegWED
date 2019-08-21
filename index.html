@@ -131,11 +131,29 @@
             });
         }
 
+        function initHeader()
+        {
+            $("header > a").click(
+                function(event)
+                {
+                    console.log($(this).attr("href"));
+                    event.preventDefault();
+                    $([document.documentElement, document.body]).animate(
+                        {
+                            scrollTop: $( $(this).attr("href") ).offset().top
+                        }, 2000
+                    );
+                }
+            );
+        }
+
         function init()
         {
             initButtonsActions();
 
             initTimer();
+
+            initHeader();
         }
 
         function EventModel()
@@ -590,11 +608,11 @@
     <header class="ready">
         <div id="headline-menu"></div>
         <!-- <a id="about-us-menu" href="#about-us">О нас</a> -->
-        <a id="lovestory-menu" href="#lovestory">Наша история</a>
-        <a id="photo-gallery-menu" href="#photo-gallery">Фотогалерея</a>
+        <a id="lovestory-menu" href="#loveStory">Наша история</a>
+        <a id="photo-gallery-menu" href="#galleryWrapper">Фотогалерея</a>
         <!-- <a id="friends-menu" href="#friends" class=" hide">Наши друзья</a> -->
-        <a id="wishlist-menu" href="#wishlist">Желания</a>
-        <a id="program-menu" href="#program">Программа</a>
+        <!-- <a id="wishlist-menu" href="#wishlist">Желания</a> -->
+        <a id="program-menu" href="#weddingProgramm">Программа</a>
         <a id="map-menu" href="#map">Карта</a>
     </header>
     <div id="mobile-menu-btn">
