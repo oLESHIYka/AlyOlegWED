@@ -23,12 +23,15 @@
             return this[this.length - 1];
         }
 
+        function togglgeShowClassToHeaderButton()
+        {
+            $("#mobile-menu-btn").toggleClass("show");
+            $("header").toggleClass("show");
+        }
+
         function initButtonsActions()
         {
-            $("#mobile-menu-btn").click(function(){
-                $(this).toggleClass("show");
-                $("header").toggleClass("show");
-            });
+            $("#mobile-menu-btn").click(togglgeShowClassToHeaderButton);
         }
 
         function initTimer()
@@ -136,13 +139,13 @@
             $("header > a").click(
                 function(event)
                 {
-                    console.log($(this).attr("href"));
                     event.preventDefault();
                     $([document.documentElement, document.body]).animate(
                         {
                             scrollTop: $( $(this).attr("href") ).offset().top
                         }, 2000
                     );
+                    togglgeShowClassToHeaderButton();
                 }
             );
         }
