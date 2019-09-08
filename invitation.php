@@ -20,6 +20,8 @@ if ( isset( $_GET["id"] ) )
     
     <link href="css/invitation.css" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Marck+Script&display=swap" rel="stylesheet">
+
     <script>
         const c_invitationText = `<?php echo $text ?>`;
 
@@ -55,10 +57,14 @@ if ( isset( $_GET["id"] ) )
 <body>
   <div class="card">
       <div class="card-page cart-page-front">
-          <div class="card-page cart-page-outside"></div>
+          <div class="card-page cart-page-outside">
+            <div class="invitation-title">
+                <p></p>
+            </div>
+          </div>
           <div class="card-page cart-page-inside">
             <span class="merry-christmas">
-                <img src="NewYear.png" width="300">
+                <!-- <img src="NewYear.png" width="300"> -->
             </span>
           </div>
       </div>
