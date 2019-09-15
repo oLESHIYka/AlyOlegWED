@@ -339,11 +339,14 @@ function getInvitationText($id)
 {
     $db = connect_db();
 
-    $invitationText = request_to_db( "SELECT `text` FROM `invitations` WHERE `id` = ".$id );
-
-    if ( count( $invitationText ) == 1 )
+    if ( is_numeric( $id) )
     {
-        return $invitationText[0]["text"];
+        $invitationText = request_to_db( "SELECT `text` FROM `invitations` WHERE `id` = ".$id );
+
+        if ( count( $invitationText ) == 1 )
+        {
+            return $invitationText[0]["text"];
+        }
     }
 }
 
@@ -366,5 +369,7 @@ function getInvitationText($id)
 // print_r(getGuests());
 // print_r(getInvitations());
 // print_r(getData());
+
+// echo getInvitationText( "1825026657" );
 
 ?>
