@@ -238,17 +238,18 @@ header {
     width: 100%;
     height: 100%;
     color: white;
-    font-family: 'Marck Script';
+    /* font-family: 'Marck Script'; */
+    font-family: "Alexandra-Zeferino-Three";
     text-shadow: #00000056 2px 0px 2px, #00000056 0px 2px 2px, #00000056 0px -2px 2px, #00000056 -2px 0px 2px;
 }
 #main-photo #information #names
 {
     font-size: 8vw;
-    font-style: italic;
+    /* font-style: italic; */
 }
 #main-photo #information #date, #main-photo #information #hashtag
 {
-    font-size: 2.5vw;
+    font-size: 4vw;
 }
 
 #jumpingArrow
@@ -1462,11 +1463,15 @@ header {
 
     #main-photo #information #names
     {
-        font-size: 35px;
+        font-size: 55px;
     }
     #main-photo #information #date, #main-photo #information #hashtag
     {
-        font-size: 25px;
+        font-size: 30px;
+    }
+    #hashtag-margin
+    {
+        height: 20vh;
     }
     
     #timerBlock #captionBlock p

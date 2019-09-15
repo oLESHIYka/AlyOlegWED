@@ -18,6 +18,7 @@ if ( isset( $_GET["id"] ) )
     
     <script type="text/javascript" src="js/jquery.js"></script>
     
+    <link href="css/fonts.css" rel="stylesheet">
     <link href="css/invitation.css" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css?family=Marck+Script&display=swap" rel="stylesheet">

@@ -81,6 +81,13 @@
             self.guestsNames = ko.computed(function(){
                 return self.guests().map(guest => guest.name()).toString();
             });
+
+            let textArea = document.getElementById("InvitationText");
+            self.textAreaHeight = ko.computed(function(){
+                self.text();
+                textArea.style.height = 'auto';
+                return textArea.scrollHeight + 'px';
+            });
             // методы:
             self.addGuest = function(guestIdx)
             {
@@ -494,9 +501,8 @@
         }
         #InvitationText
         {
-            width: 300px;
-            height: 500px;
-            /* min-height: 230px; */
+            min-width: 20%;
+            border: 1px solid grey;
             resize: none;
         }
         .guestNumber
@@ -530,6 +536,17 @@
             line-height: 1.2em;
             font-style: italic;
             text-align: center;
+        }
+
+        #invitationTextPreview
+        {
+            display: flex;
+            justify-content: center;
+            width: 500px;
+            height: 700px;
+            text-align: center;
+            align-items: center;
+            border: 1px solid grey;
         }
     </style>
 
@@ -602,8 +619,8 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <textarea id="InvitationText" class="invitationFont" data-bind="value: text"></textarea>
+                <div id="invitationTextPreview">
+                    <textarea id="InvitationText" class="invitationFont" data-bind="textInput: text, style: { height: textAreaHeight }"></textarea>
                 </div>
                 <button data-bind="click: $root.addNewInvitation, text: $root.newInvitationButtonCaption, enable: $root.newInvitationButtonEnabled"></button>
                 <button data-bind="click: clear">Сбросить</button>
