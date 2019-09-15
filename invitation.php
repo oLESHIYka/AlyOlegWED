@@ -45,7 +45,15 @@ if ( isset( $_GET["id"] ) )
             }
             else
             {
-                invitationHtml = "Приглашение не найдено...";
+                //invitationHtml = "Приглашение не найдено...";
+				// DEBUG:
+				invitationHtml = 'Дорогой друг!<br>\
+Если ты читаешь эти<br> строки - значит ты для нас очень много значишь!<br>\
+Мы сделали наш совместный шаг в вечность и хотим пригласить тебя разделить с нами это главное событие<br>в нашей жизни. \
+Ждём тебя в отеле "Садовое кольцо" в 15:00!<br>\
+И зовём с собой в музыкальное путешествие, ведь «музыка нас связала!»<br>\
+С любовью,<br> \
+Олег и Алёна';
             }
 
             $("#invitationText").html(invitationHtml);
@@ -59,7 +67,8 @@ if ( isset( $_GET["id"] ) )
       <div class="card-page cart-page-front">
           <div class="card-page cart-page-outside">
             <div class="invitation-title">
-                <p></p>
+                <p>Олег и Алёна</p>
+				<span>27.06.2020</span>
             </div>
           </div>
           <div class="card-page cart-page-inside">
