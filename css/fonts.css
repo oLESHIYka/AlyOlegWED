@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "Alexandra-Zeferino-Three";
+    src: url("../resources/fonts/Alexandra Zeferino Three.ttf") format("truetype"),
+         url("../resources/fonts/Alexandra-Zeferino-Three.svg") format("svg");
+}
+@font-face {
+    font-family: "Back to Black Demo";
+    src: url("../resources/fonts/Back to Black Demo.ttf") format("truetype"),
+	     url("../resources/fonts/Back to Black Demo.svg") format("svg");
+
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Back to Black Demo";
+    src: url("../resources/fonts/Back to Black Bold Demo.ttf") format("truetype"),
+	     url("../resources/fonts/Back to Black Bold Demo.svg") format("svg");
+
+    font-weight: bold;
+}

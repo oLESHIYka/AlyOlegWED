@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
 
+    <link href="css/fonts.css" rel="stylesheet">
     <link href="css/jquery-ui.min.css" rel="stylesheet">
 
     <script>
@@ -70,6 +71,13 @@
             return self;
         }
 
+        function recalcTextAreaHeight()
+        {
+            let textArea = document.getElementById("InvitationText");
+            textArea.style.height = 'auto';
+            textArea.style.height = textArea.scrollHeight + 'px';
+        }
+
         function Invitation(guestsList)
         {
             let self = this;
@@ -81,6 +89,63 @@
             self.guestsNames = ko.computed(function(){
                 return self.guests().map(guest => guest.name()).toString();
             });
+
+            
+            self.generatedLink = ko.computed( () => window.location.href.replace(/(.*\/)\w+\.html/, "$1")+'invitation.php?id='+self.id() );
+
+            // Предпросмотр приглашения
+            let invitationPreviewStyles = 
+            {
+                'min1020':
+                {
+                    width: '500px',
+                    height: '700px',
+                    fontSize: '50px'
+                },
+                'max1020':
+                {
+                    width: '400px',
+                    height: '560px',
+                    fontSize: '40px'
+                },
+                'max820':
+                {
+                    width: '300px',
+                    height: '420px',
+                    fontSize: '30px'
+                },
+                'max479':
+                {
+                    width: '150px',
+                    height: '214px',
+                    fontSize: '20px'
+                }
+            }
+
+            self.invitationPreviewScreenWidths = [];
+            for ( let screenWidth in invitationPreviewStyles )
+            {
+                self.invitationPreviewScreenWidths.push( screenWidth );
+            }
+
+            self.invitationPreviewWidth     = ko.observable(invitationPreviewStyles.min1020.width);
+            self.invitationPreviewHeight    = ko.observable(invitationPreviewStyles.min1020.height);
+            self.invitationPreviewFontSize  = ko.observable(invitationPreviewStyles.min1020.fontSize);
+
+            self.changeStyle = function( screenWidth )
+            {
+                if ( typeof invitationPreviewStyles[ screenWidth ] !== 'undefined' )
+                {
+                    self.invitationPreviewWidth   (invitationPreviewStyles[ screenWidth ].width);
+                    self.invitationPreviewHeight  (invitationPreviewStyles[ screenWidth ].height);
+                    self.invitationPreviewFontSize(invitationPreviewStyles[ screenWidth ].fontSize);
+
+                    recalcTextAreaHeight();
+                }
+            }
+
+            self.text.subscribe(recalcTextAreaHeight);
+
             // методы:
             self.addGuest = function(guestIdx)
             {
@@ -89,6 +154,13 @@
             self.removeGuest = function(idx)
             {
                 self.guests.splice(idx, 1);
+            }
+            self.copyLink = function(invitation)
+            {
+                let linkText = $("#link_"+invitation.id());
+                linkText.select();
+                document.execCommand("copy");
+                showInfoDiolog("Ссылка для '" + invitation.guestsNames() + "' скопирована!" );
             }
 
             self.clear = function()
@@ -395,6 +467,16 @@
                 }
             });
         }
+        function showInfoDiolog(text)
+        {
+            $("<div>" + text + "</div>").dialog({
+                buttons: {
+                    "Ок": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
 
 
         function test()
@@ -416,12 +498,12 @@
                 ],
                 invitations: [
                     {
-                        id: 1,
+                        id: 10,
                         text: "test\ntext1\nabcdef\nqwerty 1234567890",
                         guests: [1]
                     },
                     {
-                        id: 1,
+                        id: 11,
                         text: "test text2",
                         guests: [2,3]
                     }
@@ -494,10 +576,11 @@
         }
         #InvitationText
         {
-            width: 300px;
-            height: 500px;
-            /* min-height: 230px; */
+            min-width: 20%;
+            border: 1px solid grey;
             resize: none;
+            width: 100%;
+            background: none;
         }
         .guestNumber
         {
@@ -525,11 +608,27 @@
 
         .invitationFont
         {
-            font-family: "Mirza", Verdana, Arial, serif;
+            font-family: "Alexandra-Zeferino-Three";
             font-size: 26px;
-            line-height: 1.2em;
-            font-style: italic;
+            line-height: 0.7em;
             text-align: center;
+            color: #296b7e;
+        }
+
+        #invitationTextPreview
+        {
+            display: flex;
+            justify-content: center;
+            width: 500px;
+            height: 700px;
+            text-align: center;
+            align-items: center;
+            border: 1px solid grey;
+            background-image: url("resources/invitation/inside_right.png");
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
         }
     </style>
 
@@ -578,7 +677,9 @@
                 <div class="editableBlock">
                     <!-- <input data-bind="value: text" disabled> -->
                     <input data-bind="value: guestsNames" disabled>
+                    <input data-bind="value: generatedLink, attr: { id: 'link_'+id() }">
                     <input data-bind="click: $root.editInvitation" type="image" src="resources/icons/edit.png" height="25">
+                    <input data-bind="click: copyLink" type="image" src="resources/icons/copy.png" height="25">
                     <input data-bind="click: $root.showDeleteInvitationDiolog" type="image" src="resources/icons/delete.png" height="25">
                 </div>
                 <!-- /ko -->
@@ -602,8 +703,11 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <textarea id="InvitationText" class="invitationFont" data-bind="value: text"></textarea>
+                <div id="invitationPreviewStyles" data-bind="foreach: invitationPreviewScreenWidths">
+                    <button data-bind="text: $data, click: $parent.changeStyle"></button>
+                </div>
+                <div id="invitationTextPreview" data-bind="style: { width: invitationPreviewWidth, height: invitationPreviewHeight }">
+                    <textarea id="InvitationText" class="invitationFont" data-bind="textInput: text, style: { fontSize: invitationPreviewFontSize }"></textarea>
                 </div>
                 <button data-bind="click: $root.addNewInvitation, text: $root.newInvitationButtonCaption, enable: $root.newInvitationButtonEnabled"></button>
                 <button data-bind="click: clear">Сбросить</button>
