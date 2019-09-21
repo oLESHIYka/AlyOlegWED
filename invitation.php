@@ -43,6 +43,7 @@ if ( isset( $_GET["id"] ) )
             {
                 invitationHtml = invitationHtml.replace(/<\/?[^>]+>/g, '');
                 invitationHtml = invitationHtml.replace(/\n/g, '<br>');
+                invitationHtml = invitationHtml.replace(/(AlyOlegWED(.ru)?)/g, '<a id="linkHolder" href="./"><div id="link">$1</div></a>');
             }
             else
             {
@@ -75,7 +76,6 @@ if ( isset( $_GET["id"] ) )
                 </div>
                 <div class="card-page cart-page-inside">
                     <span class="merry-christmas">
-                        <!-- <img src="NewYear.png" width="300"> -->
                     </span>
                 </div>
             </div>
