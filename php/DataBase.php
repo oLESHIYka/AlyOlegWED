@@ -152,7 +152,8 @@ invitation =
 */
 {
     $db=connect_db();
-    $request = "INSERT INTO `invitations`(`id`, `text`) VALUES (".$invitation["id"].", \"".$invitation["text"]."\")";
+    $text = addcslashes( $invitation["text"], '"\'' );
+    $request = "INSERT INTO `invitations`(`id`, `text`) VALUES (".$invitation["id"].", \"".$text."\")";
     $guests = array();
     
     if ($result=$db->query($request))
@@ -305,7 +306,7 @@ function editGuestInfo ($id, $name, $age, $category)
 function editInvitationInfo ($info)
 {
     $id     = $info["id"];
-    $text   = $info["text"];
+    $text   = addcslashes( $info["text"], '"\'' );
     $guests = $info["guests"];
     $db = connect_db();
 
