@@ -43,7 +43,8 @@ body
 }
 /* Основной цвет */
 #mobile-menu-btn, #timer{
-  background-color: #89d08a;
+  /* background-color: #89d08a; */
+  background-color: #b5d1ec;
 }
 /* Меню */
 header {
@@ -347,7 +348,8 @@ header {
 }
 #timerBlock #timer > div:nth-child(2n)
 {
-    background: #99e49a;
+    /* background: #99e49a; */
+    background: #c7d8ea;
 }
 #timerBlock #timer span
 {
@@ -460,8 +462,10 @@ header {
     display: block;
     z-index: 2;
     color: #ffffff;
-    background-color: #89d08a;
-    border-color: #89d08a;
+    /* background-color: #89d08a;
+    border-color: #89d08a; */
+    background-color: #b5d1ec;
+    border-color: #b5d1ec;
     border-width: 1px;
     border-style: solid;
     font-size: 1.25vw;
@@ -604,7 +608,8 @@ header {
 .event-descr:hover .event-caption, .event-descr:hover .event-date,
 .event-descr.selected .event-caption, .event-descr.selected .event-date
 {
-    color: #89d08a;
+    /* color: #89d08a; */
+    color: #b5d1ec;
 }
 
 /* Общие стили заголовков */
@@ -686,7 +691,8 @@ header {
     display: block;
     content: "";
     width: 12px;
-    background: #89d08a;
+    /* background: #89d08a; */
+    background: #b5d1ec;
     z-index: 4;
     height: 2px;
     top: 37px;
@@ -923,7 +929,8 @@ header {
     display: none;
 }
 #map .gm-control-active {
-    background: #87ce88 !important;
+    /* background: #87ce88 !important; */
+    background: #b5d1ec !important;
     border-radius: 50%;
 }
 
