@@ -895,7 +895,8 @@ header {
 }
 #imageContent > #preloader
 {
-    padding-bottom: 60px;
+    padding-bottom: 15px;
+    padding-left: 20px;
     animation: blink 2s infinite;
 }
 #imageContent > #preloader > svg
