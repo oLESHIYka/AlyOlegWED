@@ -445,6 +445,11 @@ header {
 {
     cursor: pointer;
 }
+.weddingRulesTextBlock 
+{
+    margin-bottom: 2vw;
+	flex: 1;
+}
 
 
 /* События */
@@ -460,6 +465,10 @@ header {
 {
     width: 48vw;
     min-height: 70vw; /* Задавать из js...? */
+}
+#weddingRules .events-full-descr-block, #weddingRules .events-descr-block
+{
+    min-height: unset;
 }
 .events-full-descr-block
 {
@@ -488,15 +497,12 @@ header {
     min-height: 4vw;
     cursor: default;
 }
-#descrPhotos
-{
-    margin-bottom: 4vw;
-}
 #descrPhotos > img 
 {
     width: 8vw;
     min-width: 60px;
     box-shadow: none;
+    margin-top: 2.4vw;
 }
 .event-time-block
 {
@@ -509,6 +515,22 @@ header {
     flex-grow: 1;
     flex: 1;
     text-align: left;
+}
+#weddingRules .event-text-block
+{
+    list-style: none;
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+}
+#weddingRules .event-text-block::before
+{
+    content: '';
+    margin: 7px 15px;
+    width: 15px;
+    height: 15px;
+    background: #b5d1ec;
+    border-radius: 50%;
 }
 .event-date
 {
@@ -590,8 +612,8 @@ header {
     z-index: 1;
     width: auto;
     height: auto;
-    max-width: 100%;
-    max-height: 30vw;
+    max-width: 90%;
+    max-height: 40vw;
     min-height: 1px;
     margin-bottom: 2.4vw;
     box-shadow: 0vw 1vw 4vw rgba(0, 0, 0, 0.1);
@@ -976,7 +998,7 @@ header {
 /* Информация о встрече */
 #meetingInfoWrapper
 {
-  width: 100%;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -987,20 +1009,21 @@ header {
 
 #meetingInfo
 {
-  background: white;
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5vh 0;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.0vw;
-  padding: 5vw;
-  color: #999;
-  max-width: 75vw;
-  text-align: center;
-  border-radius: 2px;
-  box-shadow: 0vw 1vw 4vw rgba(0, 0, 0, 0.1);
+	width: 100%;
+    background: #b5d1ec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.0vw;
+    padding: 5vw 0;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+}
+#meetingInfo > span
+{
+	padding: 0 2vw;
 }
 
 /* Карта: */
@@ -1072,6 +1095,9 @@ header {
     .ls-header, #program-header, #fr-header {
       font-size: 28px;
     }
+	#weddingRules .ls-header {
+		margin-bottom: 4.4vw;
+	}
   
     .gift-header {
       font-size: 26px;
@@ -1590,7 +1616,7 @@ header {
     }
     #weddingRules .event-text-block
     {
-        text-align: center;
+        padding-right: 40px;
     }
 
     #weddingRules .event-time-block

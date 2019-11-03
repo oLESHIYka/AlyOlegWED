@@ -63,7 +63,7 @@
                               + weddingDate.getFullYear();
                               
             document.getElementById("date").innerHTML = dateFormatStr;
-            $("#weddingRules>.date")[0].innerHTML = dateFormatStr;
+            <!-- $("#weddingRules>.date")[0].innerHTML = dateFormatStr; -->
 
             // Update the count down every 1 second
             let x = setInterval(function() 
@@ -539,20 +539,20 @@
                         rules:
                         [
                             {
-                                caption:"",
-                                descr: " Мы стараемся сделать наш праздник романтически-нежным и будем рады, если вы поддержите цветовую гамму нашей свадьбы. Просим девушек избегать белого и черного цвета в своих наряд и предусмотреть наряды пастельных тонов."
+                                caption: "Мы стараемся сделать наш праздник романтически-нежным и будем рады, если вы поддержите цветовую гамму нашей свадьбы. Просим девушек избегать белого и черного цвета в своих наряд и предусмотреть наряды пастельных тонов.",
+                                descr: ""
                             },
                             {
-                                caption:"",
-                                descr: "Мы не хотим утруждать Вас выбором подарка, поэтому будем рады вашему вкладу в бюджет нашей молодой семьи."
+                                caption: "Мы не хотим утруждать Вас выбором подарка, поэтому будем рады вашему вкладу в бюджет нашей молодой семьи.",
+                                descr: ""
                             },
                             {
-                                caption: "",
-                                descr:"У нашей свадьбы есть хештег\"AlyOlegWED\", поэтому просим вас выкладывать фотографии и видео в социальные сети используя его."
+                                caption: "У нашей свадьбы есть хештег #AlyOlegWED, поэтому просим вас выкладывать фотографии и видео в социальные сети используя его.",
+                                descr: ""
                             },
                             {
-                                caption: "",
-                                descr:"Просим вас подтвердить свое присутствие до 27 мая 2020 года."
+                                caption: "Просим вас подтвердить свое присутствие до 27 мая 2020 года.",
+                                descr: ""
                             }
                         ]
                         // rules:
@@ -642,7 +642,7 @@
         <a id="photo-gallery-menu" href="#galleryWrapper">Фотогалерея</a>
         <!-- <a id="friends-menu" href="#friends" class=" hide">Наши друзья</a> -->
         <!-- <a id="wishlist-menu" href="#wishlist">Желания</a> -->
-        <a id="program-menu" href="#weddingRules">О свадьбе</a>
+        <a id="program-menu" href="#weddingRules">Стилистка свадьбы</a>
         <a id="map-menu" href="#map">Карта</a>
     </header>
     <div id="mobile-menu-btn">
@@ -750,16 +750,16 @@
         </div>
         <!-- О свадьбе -->
         <div id="weddingRules" data-bind="with: weddingRules">
-            <span class="ls-header">О свадьбе</span>
-            <span class="ls-header-desc date"></span>
+            <span class="ls-header">Стилистика свадьбы</span>
+            <!-- <span class="ls-header-desc date"></span> -->
             <div class="events-block">
                 <div class="events-full-descr-block" data-bind="foreach: eventsInfoFull">
                     <div data-bind="css: { selected: $parent.curEvent() === $index() }" class="event-full-descr">
                         <div class="event-full-descr-content">
                             <img data-bind="if: photo() !== '', attr: { src: photo } " class="event-photo" src="">
-                            <span data-bind="text: caption" class="event-caption underline-text"></span>
-                            <span data-bind="text: date" class="event-date-mobile numeric-text"></span>
-                            <span data-bind="text: descr" class="event-descr"></span>
+                            <!-- <span data-bind="text: caption" class="event-caption underline-text"></span> -->
+                            <!-- <span data-bind="text: date" class="event-date-mobile numeric-text"></span> -->
+                            <!-- <span data-bind="text: descr" class="event-descr"></span> -->
                             <div data-bind="foreach: descrPhotos" id="descrPhotos">
                                 <img data-bind="attr: { src: $data }">
                             </div>
@@ -774,7 +774,7 @@
                         <li class="event-text-block">
                             <div class="weddingRulesTextBlock">
                                 <span data-bind="text: caption" class="event-caption"></span>
-                                <span data-bind="text: descr" class="event-descr"></span>
+                                <!-- <span data-bind="text: descr" class="event-descr"></span> -->
                             </div>
                         </li>
                     </ul>
@@ -793,11 +793,8 @@
             </div>
         </div>
         <!-- Карта -->
-        <div id="meetingInfoWrapper">
-            <div id="meetingInfo">
-                Ждём Вас 27 июня 2020 года в 15:00 по адресу: Г.Москва, ул. пр-т Мира,д.14, стр.2 <br>Сбор гостей на 1 этаже в каминном зале.
-                
-            </div>
+        <div id="meetingInfo">
+			<span>Ждём Вас 27 июня 2020 года в 15:00 по адресу: Г.Москва, ул. пр-т Мира,д.14, стр.2 <br>Сбор гостей на 1 этаже в каминном зале.</span>
         </div>
         <div id="map">
             <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    
