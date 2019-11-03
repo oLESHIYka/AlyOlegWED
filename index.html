@@ -12,9 +12,8 @@
     <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
 
     <link href="css/fonts.css" rel="stylesheet">
-    <link href="css/style.css?ver=0_7_0" rel="stylesheet">
+    <link href="css/style.css?ver=1_0" rel="stylesheet">
     
-    <!-- <link href="https://fonts.googleapis.com/css?family=Marck+Script&display=swap" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
 
@@ -63,7 +62,6 @@
                               + weddingDate.getFullYear();
                               
             document.getElementById("date").innerHTML = dateFormatStr;
-            <!-- $("#weddingRules>.date")[0].innerHTML = dateFormatStr; -->
 
             // Update the count down every 1 second
             let x = setInterval(function() 
@@ -117,8 +115,6 @@
             var icon = {
                 url: 'resources/icons/map_marker.png?ver=2_0', // url
                 scaledSize: new google.maps.Size(32, 50), // scaled size
-                //origin: new google.maps.Point(0,0), // origin
-                //anchor: new google.maps.Point(0, 0) // anchor
             };
             
             var marker = new google.maps.Marker({
@@ -343,8 +339,8 @@
             const imagesNames = [
                 1, 3, 4, 5, 6, 7, 8, 9, 11, 12
             ];
-            self.imagesCount = imagesNames.length;//12;
-            self.images = []; //Array.apply(null, {length: self.imagesCount}).map( (elem, idx) => 'resources/images/gallery/' + ( idx + 1 ) + '.JPG' );
+            self.imagesCount = imagesNames.length;
+            self.images = [];
             self.templateAreas = "\"";
             
             for ( let i = 0; i < self.imagesCount; ++i )
@@ -366,12 +362,9 @@
                 }
                 return self.curShift() * self.imageWidth();
             });
-
-            //self.curTranslateX.subscribe( () => $("#gallery>div").css( "transform", "translateX("+self.curTranslateX()+"vw)" ) );
             
             self.moveRightEnable = ko.computed(function(){
                 return self.imagesCount / 2.0 - self.imagesPerScreenCount()  > -self.curShift();
-                //return self.curTranslateX() > 100 * ( 1 - self.imagesCount / 2.0 / self.imagesPerScreenCount() );
             });
             self.moveLeftEnable = ko.computed(function(){
                 return self.curShift() < 0;
@@ -381,13 +374,11 @@
             { 
                 if ( self.moveRightEnable() ) 
                     self.curShift( self.curShift() - 1 );
-                    //self.curTranslateX( self.curTranslateX() - 100 / self.imagesPerScreenCount() );
             }
             self.moveLeft  = function ()
             { 
                 if ( self.moveLeftEnable() )
                     self.curShift( self.curShift() + 1 );
-                    //self.curTranslateX( self.curTranslateX() + 100 / self.imagesPerScreenCount() );
             }
             
             function mod(n, m) {
@@ -489,28 +480,28 @@
             {
                 "loveStory": [
                     {
-                        date: "2016.07.23",
+                        date: "23.07.2016",
                         caption: "Знакомство",
                         descr: "Как хорошо, что мы оказались в нужном месте, в нужное время.",
                         fullDescr: "На дворе был жаркий солнечный день, Алёна гостила на даче у своей сестры Лизы, а Олег приехал туда со своими одногруппниками отмечать окончание 4 курса. Лиза представила нас друг другу и в последующие два дня мы не раставались. Но в конце концов нам пришлось проститься, не зная, будет ли эта встреча для нас последней.",
                         photo: "resources/images/love_story/familiarity.jpg"
                     },
                     {
-                        date: "2016.07.26",
+                        date: "26.07.2016",
                         caption: "Первое свидание",
                         descr: "Это было неожиданно, и мокро." ,
                         fullDescr: "Проведя один день друг без друга, мы поняли, что так не должно продолжаться и договорились о встрече. Наша совсместная не любовь к шумным мегополисам привела нас к варианту прогулки по Лосинному острову. Мы шли куда глаза глядели, одурманенные друг другом. Во время прогулки начался ливень и поняв, что дальше идти невозможно, мы остановились. У нас был только один зонтик, поэтому мы прижались поближе друг к другу и Олег решил сделать первый шаг - впервые поцеловав свою будущую невесту.",
                         photo: "resources/images/love_story/first_date.jpg"
                     },
                     {
-                        date: "2016.12.31",
+                        date: "31.12.2016",
                         caption: "Тайное становится явным",
                         descr: "Вечер внезапных встреч в дружной компании",
                         fullDescr: "Всё это время мы не афишировали свои отношения и скрывали их даже от некоторых близких нам людей. Сейчас, навреное, уже не совсем понятно зачем. Главным образом мы скрывали их от Лизы. И вот, мы собрались встречать новый 2017 год у наших друзей, где произошла неожтданная для Лизы встреча с сестрой.",
                         photo: "resources/images/love_story/no_secret.jpg"
                     },
                     {
-                        date: "2019.06.27",
+                        date: "27.06.2019",
                         caption: "Предложение",
                         descr: "Неожиданное, приятное и незабываемое",
                         fullDescr: "Это был обычный вечер четверга, мы отдыхали после рабочего дня и тут, заведя разговор о даче, Алёна ушла советоваться к папе и Олег решил сделать этот шаг прямо сейчас, преподнеся кольца своей любимой!",
@@ -555,29 +546,6 @@
                                 descr: ""
                             }
                         ]
-                        // rules:
-                        // [                            
-                        //     {
-                        //         date: "15-00",
-                        //         caption: "Начало",
-                        //         descr: "Ждем вас в это время у входа в ресторане отеля \"Садовое кольцо\""
-                        //     },
-                        //     {
-                        //         date: "16-00",
-                        //         caption: "Выездная церемония",
-                        //         descr: ""
-                        //     },
-                        //     {
-                        //         date: "17-00",
-                        //         caption: "Банкет",
-                        //         descr: ""
-                        //     },
-                        //     {
-                        //         date: "23-00",
-                        //         caption: "Конец",
-                        //         descr: ""
-                        //     }
-                        // ]
                     }
                 }
             );
@@ -637,11 +605,8 @@
     <!-- Меню -->
     <header class="ready">
         <div id="headline-menu"></div>
-        <!-- <a id="about-us-menu" href="#about-us">О нас</a> -->
         <a id="lovestory-menu" href="#loveStory">Наша история</a>
         <a id="photo-gallery-menu" href="#galleryWrapper">Фотогалерея</a>
-        <!-- <a id="friends-menu" href="#friends" class=" hide">Наши друзья</a> -->
-        <!-- <a id="wishlist-menu" href="#wishlist">Желания</a> -->
         <a id="program-menu" href="#weddingRules">Стилистка свадьбы</a>
         <a id="map-menu" href="#map">Карта</a>
     </header>
@@ -757,9 +722,6 @@
                     <div data-bind="css: { selected: $parent.curEvent() === $index() }" class="event-full-descr">
                         <div class="event-full-descr-content">
                             <img data-bind="if: photo() !== '', attr: { src: photo } " class="event-photo" src="">
-                            <!-- <span data-bind="text: caption" class="event-caption underline-text"></span> -->
-                            <!-- <span data-bind="text: date" class="event-date-mobile numeric-text"></span> -->
-                            <!-- <span data-bind="text: descr" class="event-descr"></span> -->
                             <div data-bind="foreach: descrPhotos" id="descrPhotos">
                                 <img data-bind="attr: { src: $data }">
                             </div>
@@ -767,34 +729,19 @@
                     </div>
                 </div>
                 <div class="events-descr-block">
-                    <!-- <div id="weddingRulesCaption" class="ls-heder">
-                        Правила
-                    </div> -->
                     <ul data-bind="foreach: eventsInfoPreview">
                         <li class="event-text-block">
                             <div class="weddingRulesTextBlock">
                                 <span data-bind="text: caption" class="event-caption"></span>
-                                <!-- <span data-bind="text: descr" class="event-descr"></span> -->
                             </div>
                         </li>
                     </ul>
-                    <!-- <div class="event-descr">
-                        <div class="event-time-block">
-                            <span class="event-dotts"></span>
-                            <span data-bind="text: date" class="event-date numeric-text"></span>
-                            <span class="event-dotts"></span>
-                        </div>
-                        <div class="event-text-block">
-                            <span data-bind="text: caption" class="event-caption"></span>
-                            <span data-bind="text: descr" class="event-descr"></span>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
         <!-- Карта -->
         <div id="meetingInfo">
-			<span>Ждём Вас 27 июня 2020 года в 15:00 по адресу: Г.Москва, ул. пр-т Мира,д.14, стр.2 <br>Сбор гостей на 1 этаже в каминном зале.</span>
+			<span>Ждём Вас <span class=".numeric-text">27</span class=".numeric-text"> июня <span class=".numeric-text">2020</span class=".numeric-text"> года<br class="maxScreen600"> в <span class=".numeric-text">15:00</span class=".numeric-text"> по адресу:<br class="maxScreen1024"> Г.Москва, ул. пр-т Мира,<br class="maxScreen600"> д.<span class=".numeric-text">14</span>, стр.<span class=".numeric-text">2</span class=".numeric-text"> <br>Сбор гостей на <span class=".numeric-text">1</span class=".numeric-text"> этаже в каминном зале.</span>
         </div>
         <div id="map">
             <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    
