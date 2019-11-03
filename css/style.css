@@ -41,9 +41,12 @@ body
     border-image: linear-gradient(to right, rgba(180,180,180,0) 0%, rgba(180,180,180,0.7) 30%, rgba(180,180,180,0.7) 70%, rgba(180,180,180,0) 100%);
     border-image-slice: 0 0 1 0;
 }
+.maxScreen1024, .maxScreen800, .maxScreen600
+{
+	display: none;
+}
 /* Основной цвет */
 #mobile-menu-btn, #timer{
-  /* background-color: #89d08a; */
   background-color: #b5d1ec;
 }
 /* Меню */
@@ -239,14 +242,12 @@ header {
     width: 100%;
     height: 100%;
     color: white;
-    /* font-family: 'Marck Script'; */
     font-family: "Alexandra-Zeferino-Three";
     text-shadow: #00000056 2px 0px 2px, #00000056 0px 2px 2px, #00000056 0px -2px 2px, #00000056 -2px 0px 2px;
 }
 #main-photo #information #names
 {
     font-size: 8vw;
-    /* font-style: italic; */
 }
 #main-photo #information #date, #main-photo #information #hashtag
 {
@@ -269,9 +270,7 @@ header {
     position: fixed;
     width: 100%;
     height: 74px;
-    /* background: #ffffffc2; */
     z-index: 1;
-    /* border-radius: 50%; */
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -293,12 +292,10 @@ header {
 #jumpingArrow:before
 {
     transform: rotate(-45deg) translateX(50%);
-    /* transform-origin: right; */
 }
 #jumpingArrow:after
 {
     transform: rotate(45deg) translateX(-50%);
-    /* transform-origin: left; */
 }
 
 /* Контент */
@@ -391,7 +388,6 @@ header {
 }
 #timerBlock #timer > div:nth-child(2n)
 {
-    /* background: #99e49a; */
     background: #c7d8ea;
 }
 #timerBlock #timer span
@@ -425,7 +421,6 @@ header {
 #ls-events-prev-buttton, #ls-events-next-buttton
 {
     width: 10vw;
-    /* height: 100%; */
     cursor: pointer;
     visibility: hidden;
 }
@@ -520,7 +515,6 @@ header {
 {
     list-style: none;
     display: flex;
-    /* align-items: center; */
     justify-content: space-between;
 }
 #weddingRules .event-text-block::before
@@ -538,8 +532,6 @@ header {
     display: block;
     z-index: 2;
     color: #ffffff;
-    /* background-color: #89d08a;
-    border-color: #89d08a; */
     background-color: #b5d1ec;
     border-color: #b5d1ec;
     border-width: 1px;
@@ -627,7 +619,6 @@ header {
     padding-bottom: 1vw;
     position: relative;
     max-width: 90%;
-    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -684,7 +675,6 @@ header {
 .event-descr:hover .event-caption, .event-descr:hover .event-date,
 .event-descr.selected .event-caption, .event-descr.selected .event-date
 {
-    /* color: #89d08a; */
     color: #b5d1ec;
 }
 
@@ -727,9 +717,6 @@ header {
   transition: transform 0.5s;
   background-position: center;
   background-size: cover;
-
-  /*background: green;
-  border: 1px solid black;*/
 }
 
 #scrollLeftButton, #scrollRightButton
@@ -767,7 +754,6 @@ header {
     display: block;
     content: "";
     width: 12px;
-    /* background: #89d08a; */
     background: #b5d1ec;
     z-index: 4;
     height: 2px;
@@ -1037,7 +1023,6 @@ header {
     display: none;
 }
 #map .gm-control-active {
-    /* background: #87ce88 !important; */
     background: #b5d1ec !important;
     border-radius: 50%;
 }
@@ -1050,11 +1035,15 @@ header {
 .gm-bundled-control > div:first-child > div > div 
 {
     height: 8px !important;
-    /*height: 1vw !important;*/
 }
 
 /* Экран до 1024px */
 @media screen and (max-width: 1024px) {
+
+	.maxScreen1024
+	{
+		display: unset;
+	}
 
     svg path, svg ellipse, .ls-event-link-date, #map-header, .program-time, .ls-events-text-header, .program-text-header,
     .friends-links div, .gallery-view-text, .friends-photos-wrapper, #program-bg, #program-bg.show, header a,
@@ -1167,7 +1156,6 @@ header {
       flex-direction: column;
       -webkit-flex-direction: column;
       background-color: rgba(20,20,20,0.98);
-      /* background-image: url(/img/noise.png); */
       background-position: center;
       background-size: auto;
       background-repeat: repeat;
@@ -1299,10 +1287,6 @@ header {
     {
         grid-template-rows: repeat(2, 33.33333vw);
     }
-  
-    /* .ls-header, #program-header, #fr-header {
-      margin-top: 50px;
-    } */
 
     .events-full-descr-block .event-descr
     {
@@ -1539,12 +1523,17 @@ header {
   
     #meetingInfo
     {
-      font-size: 22px;
+      font-size: 28px;
+	  padding: 50px 0;
     }
   
   }
   /* Экран до 800px */
   @media screen and (max-width: 800px) {
+	.maxScreen800 {
+		display: unset;
+	}
+	  
     .underline-text:before
     {
         width: unset;
@@ -1645,50 +1634,6 @@ header {
     {
         height: 75vw;
     }
-
-  
-    /* #about-couple-content, #about-couple-content.straight {
-      min-height: 40vh;
-      padding: 10px 0;
-    }
-  
-    #about-couple-content.reverse {
-      flex-wrap: wrap-reverse;
-      -webkit-flex-wrap: wrap-reverse;
-    }
-  
-    #about-groom-block, #about-bride-block {
-      width: 96%;
-      margin: 10px 0;
-      padding: 12vw 8vw 10vw;
-    }
-  
-    #friends-block-wrapper, #friends-block-wrapper.straight, #program-events-block, #program-events-block.straight {
-      flex-direction: column;
-      -webkit-flex-direction: column;
-      margin-top: 30px;
-      margin-bottom: 0px;
-    }
-  
-    #friends-block-wrapper.reverse, #program-events-block.reverse {
-      flex-direction: column-reverse;
-      -webkit-flex-direction: column-reverse;
-    }
-  
-    #groom-friends-block, #bride-friends-block, #wedding-style-block, #programs-block {
-      margin-bottom: 40px;
-      margin-top: -1px;
-    }
-  
-    .friends-links {
-      overflow: hidden;
-    }
-  
-    .friends-links div {
-      margin: -1px;
-    }
-  
-    */
     
     #ls-events-prev-buttton, #ls-events-next-buttton
     {
@@ -1872,4 +1817,10 @@ header {
       max-height: unset;
     }
   
+  }
+  /* Экран до 600px */
+  @media screen and (max-width: 600px) {
+	.maxScreen600 {
+		display: unset;
+	}
   }
