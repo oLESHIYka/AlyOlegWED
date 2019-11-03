@@ -12,7 +12,7 @@
     <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
 
     <link href="css/fonts.css" rel="stylesheet">
-    <link href="css/style.css?ver=0_6_1" rel="stylesheet">
+    <link href="css/style.css?ver=0_7_0" rel="stylesheet">
     
     <!-- <link href="https://fonts.googleapis.com/css?family=Marck+Script&display=swap" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap" rel="stylesheet">
@@ -63,7 +63,7 @@
                               + weddingDate.getFullYear();
                               
             document.getElementById("date").innerHTML = dateFormatStr;
-            $("#weddingProgramm>.date")[0].innerHTML = dateFormatStr;
+            $("#weddingRules>.date")[0].innerHTML = dateFormatStr;
 
             // Update the count down every 1 second
             let x = setInterval(function() 
@@ -168,6 +168,7 @@
             self.date    = ko.observable("");
             self.descr   = ko.observable("");
             self.photo   = ko.observable("");
+            self.descrPhotos = ko.observableArray([]);
 
             self.__init__ = function( data )
             {
@@ -186,6 +187,12 @@
                 if ( typeof data["photo"] !== undefined )
                 {
                     self.photo( data["photo"] );
+                }
+                if ( typeof data["descrPhotos"] !== undefined && 
+                     Array.isArray( data["descrPhotos"] )
+                   )
+                {
+                    data["descrPhotos"].forEach( photo => self.descrPhotos.push( photo ) );
                 }
             }
 
@@ -226,21 +233,23 @@
 
                     if ( events.length > 0 ) { self.curEvent(0); }
                 }
-                else if ( typeof data["weddingProgramm"] !== "undefined" )
+                else if ( typeof data["weddingRules"] !== "undefined" )
                 {
-                    let weddingProgrammData = data["weddingProgramm"];
+                    let weddingRulesData = data["weddingRules"];
                     self.eventsInfoFull.push( new EventModel() );
-                    if ( typeof weddingProgrammData["stylistics"] !== "undefined" )
+                    if ( typeof weddingRulesData["stylistics"] !== "undefined" )
                     {
-                        let stylistics = weddingProgrammData["stylistics"];
+                        let stylistics = weddingRulesData["stylistics"];
                         self.eventsInfoFull().back().__init__({ 
-                            caption: stylistics.caption,
-                            descr  : stylistics.descr
+                            caption     : stylistics.caption,
+                            descr       : stylistics.descr,
+                            photo       : stylistics.photo,
+                            descrPhotos : stylistics.descrPhotos
                         });
                     }
-                    if ( typeof weddingProgrammData["programm"] !== "undefined" )
+                    if ( typeof weddingRulesData["rules"] !== "undefined" )
                     {
-                        for ( let event of weddingProgrammData["programm"] )
+                        for ( let event of weddingRulesData["rules"] )
                         {
                             self.eventsInfoPreview.push( new EventModel() );
                             self.eventsInfoPreview().back().__init__({ 
@@ -249,7 +258,7 @@
                                 descr  : event.descr
                             });
                         }
-                        if ( weddingProgrammData["programm"].length > 0 ) { self.curEvent(0); }
+                        if ( weddingRulesData["rules"].length > 0 ) { self.curEvent(0); }
                     }
                 }
                 else
@@ -331,13 +340,16 @@
         {
             let self = this;
 
-            self.imagesCount = 12;
+            const imagesNames = [
+                1, 3, 4, 5, 6, 7, 8, 9, 11, 12
+            ];
+            self.imagesCount = imagesNames.length;//12;
             self.images = []; //Array.apply(null, {length: self.imagesCount}).map( (elem, idx) => 'resources/images/gallery/' + ( idx + 1 ) + '.JPG' );
             self.templateAreas = "\"";
             
             for ( let i = 0; i < self.imagesCount; ++i )
             {
-                self.images.push( ImagesStruct ( i + 1 ) );
+                self.images.push( ImagesStruct ( imagesNames[i] ) );
                 self.templateAreas += ( i === self.imagesCount / 2 ? "\" \"" : "" ) + "block" + i + " ";
             }
             self.templateAreas += "\"";
@@ -507,40 +519,65 @@
                 ]
             });
             
-            self.weddingProgramm = new EventsModel();
-            self.weddingProgramm.__init__(
+            self.weddingRules = new EventsModel();
+            self.weddingRules.__init__(
                 {
-                    weddingProgramm: 
+                    weddingRules: 
                     {
                         stylistics:
                         {
                             caption: "Стилистика свадьбы",
-                            descr: "Тут будет расписана стилистика свадьба, подробнее, мб с кружочками"
+                            descr: "", //"Тут будет расписана стилистика свадьба, подробнее, мб с кружочками",
+                            photo: "resources/images/styling/style.JPEG",
+                            descrPhotos: 
+                            [
+                                "resources/icons/color_01.png",
+                                "resources/icons/color_02.png",
+                                "resources/icons/color_03.png"
+                            ]
                         },
-                        programm:
+                        rules:
                         [
-                            
                             {
-                                date: "15-00",
-                                caption: "Начало",
-                                descr: "Ждем вас в это время у входа в ресторане отеля \"Садовое кольцо\""
+                                caption:"",
+                                descr: " Мы стараемся сделать наш праздник романтически-нежным и будем рады, если вы поддержите цветовую гамму нашей свадьбы. Просим девушек избегать белого и черного цвета в своих наряд и предусмотреть наряды пастельных тонов."
                             },
                             {
-                                date: "16-00",
-                                caption: "Выездная церемония",
-                                descr: ""
+                                caption:"",
+                                descr: "Мы не хотим утруждать Вас выбором подарка, поэтому будем рады вашему вкладу в бюджет нашей молодой семьи."
                             },
                             {
-                                date: "17-00",
-                                caption: "Банкет",
-                                descr: ""
+                                caption: "",
+                                descr:"У нашей свадьбы есть хештег\"AlyOlegWED\", поэтому просим вас выкладывать фотографии и видео в социальные сети используя его."
                             },
                             {
-                                date: "23-00",
-                                caption: "Конец",
-                                descr: ""
+                                caption: "",
+                                descr:"Просим вас подтвердить свое присутствие до 27 мая 2020 года."
                             }
                         ]
+                        // rules:
+                        // [                            
+                        //     {
+                        //         date: "15-00",
+                        //         caption: "Начало",
+                        //         descr: "Ждем вас в это время у входа в ресторане отеля \"Садовое кольцо\""
+                        //     },
+                        //     {
+                        //         date: "16-00",
+                        //         caption: "Выездная церемония",
+                        //         descr: ""
+                        //     },
+                        //     {
+                        //         date: "17-00",
+                        //         caption: "Банкет",
+                        //         descr: ""
+                        //     },
+                        //     {
+                        //         date: "23-00",
+                        //         caption: "Конец",
+                        //         descr: ""
+                        //     }
+                        // ]
                     }
                 }
             );
@@ -605,7 +642,7 @@
         <a id="photo-gallery-menu" href="#galleryWrapper">Фотогалерея</a>
         <!-- <a id="friends-menu" href="#friends" class=" hide">Наши друзья</a> -->
         <!-- <a id="wishlist-menu" href="#wishlist">Желания</a> -->
-        <a id="program-menu" href="#weddingProgramm">Программа</a>
+        <a id="program-menu" href="#weddingRules">О свадьбе</a>
         <a id="map-menu" href="#map">Карта</a>
     </header>
     <div id="mobile-menu-btn">
@@ -662,8 +699,8 @@
         </div>
         <!-- Наша история -->
         <div id="loveStory" data-bind="with: loveStory">
-            <span id="ls-header">Наша История</span>
-            <span id="ls-header-desc">от начала и до сегодня</span>
+            <span class="ls-header">Наша История</span>
+            <span class="ls-header-desc">от начала и до сегодня</span>
             <div class="events-block">
                 <div data-bind="click: changeToPrevEvent" id="ls-events-prev-buttton">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve">
@@ -711,10 +748,10 @@
             </div>
             <div id="scrollRightButton" data-bind="click: function() { moveRight(); }, css: { 'hidden': !moveRightEnable() }"></div>
         </div>
-        <!-- Программа дня -->
-        <div id="weddingProgramm" data-bind="with: weddingProgramm">
-            <span id="ls-header">Программа дня</span>
-            <span id="ls-header-desc" class="date"></span>
+        <!-- О свадьбе -->
+        <div id="weddingRules" data-bind="with: weddingRules">
+            <span class="ls-header">О свадьбе</span>
+            <span class="ls-header-desc date"></span>
             <div class="events-block">
                 <div class="events-full-descr-block" data-bind="foreach: eventsInfoFull">
                     <div data-bind="css: { selected: $parent.curEvent() === $index() }" class="event-full-descr">
@@ -723,11 +760,25 @@
                             <span data-bind="text: caption" class="event-caption underline-text"></span>
                             <span data-bind="text: date" class="event-date-mobile numeric-text"></span>
                             <span data-bind="text: descr" class="event-descr"></span>
+                            <div data-bind="foreach: descrPhotos" id="descrPhotos">
+                                <img data-bind="attr: { src: $data }">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="events-descr-block" data-bind="foreach: eventsInfoPreview">
-                    <div class="event-descr">
+                <div class="events-descr-block">
+                    <!-- <div id="weddingRulesCaption" class="ls-heder">
+                        Правила
+                    </div> -->
+                    <ul data-bind="foreach: eventsInfoPreview">
+                        <li class="event-text-block">
+                            <div class="weddingRulesTextBlock">
+                                <span data-bind="text: caption" class="event-caption"></span>
+                                <span data-bind="text: descr" class="event-descr"></span>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- <div class="event-descr">
                         <div class="event-time-block">
                             <span class="event-dotts"></span>
                             <span data-bind="text: date" class="event-date numeric-text"></span>
@@ -737,11 +788,17 @@
                             <span data-bind="text: caption" class="event-caption"></span>
                             <span data-bind="text: descr" class="event-descr"></span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
         <!-- Карта -->
+        <div id="meetingInfoWrapper">
+            <div id="meetingInfo">
+                Ждём Вас 27 июня 2020 года в 15:00 по адресу: Г.Москва, ул. пр-т Мира,д.14, стр.2 <br>Сбор гостей на 1 этаже в каминном зале.
+                
+            </div>
+        </div>
         <div id="map">
             <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    
         </div>
