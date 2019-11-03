@@ -411,7 +411,7 @@ header {
 }
 
 /* Наша история */
-#loveStory, #weddingProgramm
+#loveStory, #weddingRules
 {
     width: 100%;
     background: #fafafa;
@@ -445,6 +445,12 @@ header {
 {
     cursor: pointer;
 }
+.weddingRulesTextBlock 
+{
+    margin-bottom: 2vw;
+	flex: 1;
+}
+
 
 /* События */
 .events-block
@@ -459,6 +465,10 @@ header {
 {
     width: 48vw;
     min-height: 70vw; /* Задавать из js...? */
+}
+#weddingRules .events-full-descr-block, #weddingRules .events-descr-block
+{
+    min-height: unset;
 }
 .events-full-descr-block
 {
@@ -487,6 +497,13 @@ header {
     min-height: 4vw;
     cursor: default;
 }
+#descrPhotos > img 
+{
+    width: 8vw;
+    min-width: 60px;
+    box-shadow: none;
+    margin-top: 2.4vw;
+}
 .event-time-block
 {
     display: block;
@@ -498,6 +515,22 @@ header {
     flex-grow: 1;
     flex: 1;
     text-align: left;
+}
+#weddingRules .event-text-block
+{
+    list-style: none;
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+}
+#weddingRules .event-text-block::before
+{
+    content: '';
+    margin: 7px 15px;
+    width: 15px;
+    height: 15px;
+    background: #b5d1ec;
+    border-radius: 50%;
 }
 .event-date
 {
@@ -579,8 +612,8 @@ header {
     z-index: 1;
     width: auto;
     height: auto;
-    max-width: 100%;
-    max-height: 30vw;
+    max-width: 90%;
+    max-height: 40vw;
     min-height: 1px;
     margin-bottom: 2.4vw;
     box-shadow: 0vw 1vw 4vw rgba(0, 0, 0, 0.1);
@@ -656,7 +689,7 @@ header {
 }
 
 /* Общие стили заголовков */
-#ls-header, #ls-header-desc, .event-full-descr-content .event-caption,
+.ls-header, .ls-header-desc, .event-full-descr-content .event-caption,
 #program-header, #program-header-desc,
 #wedding-style-header 
 {
@@ -666,13 +699,13 @@ header {
   color: #a4a4a4;
   cursor: default;
 }
-#ls-header, #program-header
+.ls-header, #program-header
 {
   margin-top: 4.4vw;
   font-size: 2.6vw;
   text-transform: uppercase;
 }
-#ls-header-desc, #program-header-desc{
+.ls-header-desc, #program-header-desc{
   margin-top: 1vw;
   font-size: 2.2vw;
 }
@@ -962,6 +995,37 @@ header {
     }
 }
 
+/* Информация о встрече */
+#meetingInfoWrapper
+{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../resources/images/slider/1.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+#meetingInfo
+{
+	width: 100%;
+    background: #b5d1ec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.0vw;
+    padding: 5vw 0;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+}
+#meetingInfo > span
+{
+	padding: 0 2vw;
+}
+
 /* Карта: */
 #map
 {
@@ -1020,10 +1084,6 @@ header {
       margin: 20px auto 0;
     }
   
-    #sound-approve-header p {
-      font-size: 100px;
-    }
-  
     #timerBlock #timer p {
       font-size: 34px;
     }
@@ -1032,9 +1092,12 @@ header {
       font-size: 30px;
     }
   
-    #ls-header, #program-header, #fr-header, #sound-approve-header h3 {
+    .ls-header, #program-header, #fr-header {
       font-size: 28px;
     }
+	#weddingRules .ls-header {
+		margin-bottom: 4.4vw;
+	}
   
     .gift-header {
       font-size: 26px;
@@ -1067,15 +1130,15 @@ header {
         min-width: 100px;
     }
   
-    .ls-events-header-link, .program-text-header, #footer-names, .gift-link-header, #sound-approve-btns {
+    .ls-events-header-link, .program-text-header, #footer-names, .gift-link-header {
       font-size: 18px;
     }
   
     #timerBlock span, .couple-header,
-    #ls-header-desc,
+    .ls-header-desc,
     #program-header-desc, 
     #fr-header-desc, #wl-desc, #gallery-subheader, #gallery-hashtag, .friends-links div, .map-text, 
-    .countdown-bg div span, #gallery-grid6x3 #gallery-subheader, #gallery-grid6x3 #gallery-hashtag, #sound-approve-header {
+    .countdown-bg div span, #gallery-grid6x3 #gallery-subheader, #gallery-grid6x3 #gallery-hashtag {
       font-size: 21px !important;
     }
   
@@ -1217,7 +1280,7 @@ header {
       background-color: rgba(255,255,255,0.9);
     }
   
-    .couple-header, #ls-header-desc, #program-header-desc, #fr-header-desc, #wl-desc {
+    .couple-header, .ls-header-desc, #program-header-desc, #fr-header-desc, #wl-desc {
       margin-top: 8px;
     }
   
@@ -1237,7 +1300,7 @@ header {
         grid-template-rows: repeat(2, 33.33333vw);
     }
   
-    /* #ls-header, #program-header, #fr-header {
+    /* .ls-header, #program-header, #fr-header {
       margin-top: 50px;
     } */
 
@@ -1298,7 +1361,7 @@ header {
     }
   
     .gallery-view-text, .gallery-photo:before, .friends-photo-text, .friends-photo-toner, .program-hover-title, #program-toner,
-    #sound-approve-btns span svg {
+     {
       display: none;
     }
   
@@ -1474,24 +1537,9 @@ header {
       margin-top: 16px;
     }
   
-    #sound-approve-header h3 {
-      margin: 6px 0;
-    }
-  
-    #sound-approve-header p {
-      top: -30px;
-    }
-  
-    #sound-approve-header div {
-      width: 60%;
-    }
-  
-    #sound-approve-btns {
-      margin: 20px auto 0;
-    }
-  
-    #sound-approve-btns span {
-      margin: 0 4px;
+    #meetingInfo
+    {
+      font-size: 22px;
     }
   
   }
@@ -1553,41 +1601,41 @@ header {
     }
 
     /* Программа дня */
-    #weddingProgramm .events-block
+    #weddingRules .events-block
     {
         flex-direction: column;
     }
-    #weddingProgramm .events-full-descr-block, .events-descr-block
+    #weddingRules .events-full-descr-block, .events-descr-block
     {
         width: 100%;
     }
-    #weddingProgramm .event-descr
+    #weddingRules .event-descr
     {
         flex-direction: column;
         align-items: center;
     }
-    #weddingProgramm .event-text-block
+    #weddingRules .event-text-block
     {
-        text-align: center;
+        padding-right: 40px;
     }
 
-    #weddingProgramm .event-time-block
+    #weddingRules .event-time-block
     {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
-    #weddingProgramm .event-dotts
+    #weddingRules .event-dotts
     {
         height: 20px;
         position: unset;
     }
-    #weddingProgramm .event-descr:first-child .event-dotts:first-child
+    #weddingRules .event-descr:first-child .event-dotts:first-child
     {
         display: none;
     }
-    #weddingProgramm .event-descr:last-child .event-dotts
+    #weddingRules .event-descr:last-child .event-dotts
     {
         display: initial;
     }
@@ -1640,13 +1688,7 @@ header {
       margin: -1px;
     }
   
-    #sound-approve-header div {
-      width: 80%;
-    }
-  
-    #sound-approve-btns span {
-      padding: 0 10px;
-    } */
+    */
     
     #ls-events-prev-buttton, #ls-events-next-buttton
     {
