@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Алёна и Олег</title>
-    <link rel="shortcut icon" type="image/x-icon" href="resources/icons/wedding.jpg" />
+    <link rel="shortcut icon" type="image/x-icon" href="resources/icons/wedding.png" />
     
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
@@ -33,11 +33,45 @@
         {
             $("#mobile-menu-btn").click(togglgeShowClassToHeaderButton);
         }
+        
+        const ofMonthArr = [
+            "января",
+            "февраля",
+            "марта",
+            "апреля",
+            "мая",
+            "июня",
+            "июля",
+            "августа",
+            "сентября",
+            "октября",
+            "ноября",
+            "декабря"
+        ];
+        
+        const weddingDate = new Date("Aug 23, 2020 15:00:00");
+
+        function TimerModel()
+        {
+            let self = this;
+
+            self.weddingDate = new Date("Aug 23, 2020 15:00:00");
+
+            self.dateFormatStr = ( weddingDate.getDate() < 10 ? '0' : '' + weddingDate.getDate() ) + '/' 
+                               + ( ( ( weddingDate.getMonth() + 1 ) < 10 ? '0' : '' ) + ( weddingDate.getMonth() + 1 ) ) + '/' 
+                               + weddingDate.getFullYear();
+
+            self.captionFirst  = ko.observable("");
+            self.captionSecond = ko.observable("");
+
+            self.wordGroup = ko.observable("");
+        }
 
         function initTimer()
         {
             // Set the date we're counting down to
-            const weddingDate = new Date("Jun 27, 2020 12:00:00");
+            //const weddingDate = new Date("Jun 27, 2020 12:00:00");
+            
             const words = 
             {
                 "before":
@@ -62,6 +96,10 @@
                               + weddingDate.getFullYear();
                               
             document.getElementById("date").innerHTML = dateFormatStr;
+            
+            document.getElementById("weddingDate").innerHTML   = weddingDate.getDate();
+            document.getElementById("weddingMonth").innerHTML = ofMonthArr[ weddingDate.getMonth() ];
+            document.getElementById("weddingYear").innerHTML   = weddingDate.getFullYear();
 
             // Update the count down every 1 second
             let x = setInterval(function() 
@@ -490,14 +528,14 @@
                         date: "26.07.2016",
                         caption: "Первое свидание",
                         descr: "Это было неожиданно, и мокро." ,
-                        fullDescr: "Проведя один день друг без друга, мы поняли, что так не должно продолжаться и договорились о встрече. Наша совсместная не любовь к шумным мегополисам привела нас к варианту прогулки по Лосинному острову. Мы шли куда глаза глядели, одурманенные друг другом. Во время прогулки начался ливень и поняв, что дальше идти невозможно, мы остановились. У нас был только один зонтик, поэтому мы прижались поближе друг к другу и Олег решил сделать первый шаг - впервые поцеловав свою будущую невесту.",
+                        fullDescr: "Проведя один день друг без друга, мы поняли, что так не должно продолжаться и договорились о встрече. Наша совсместная нелюбовь к шумным мегаполисам привела нас к варианту прогулки по Лосиному острову. Мы шли куда глаза глядели, одурманенные друг другом. Во время прогулки начался ливень и поняв, что дальше идти невозможно, мы остановились. У нас был только один зонтик, поэтому мы прижались поближе друг к другу и Олег решил сделать первый шаг - впервые поцеловав свою будущую невесту.",
                         photo: "resources/images/love_story/first_date.jpg"
                     },
                     {
                         date: "31.12.2016",
                         caption: "Тайное становится явным",
                         descr: "Вечер внезапных встреч в дружной компании",
-                        fullDescr: "Всё это время мы не афишировали свои отношения и скрывали их даже от некоторых близких нам людей. Сейчас, навреное, уже не совсем понятно зачем. Главным образом мы скрывали их от Лизы. И вот, мы собрались встречать новый 2017 год у наших друзей, где произошла неожтданная для Лизы встреча с сестрой.",
+                        fullDescr: "Всё это время мы не афишировали свои отношения и скрывали их даже от некоторых близких нам людей. Сейчас, наверное, уже не совсем понятно зачем. Главным образом мы скрывали их от Лизы. И вот, мы собрались встречать новый 2017 год у наших друзей, где произошла неожиданная для Лизы встреча с сестрой.",
                         photo: "resources/images/love_story/no_secret.jpg"
                     },
                     {
@@ -530,7 +568,7 @@
                         rules:
                         [
                             {
-                                caption: "Мы стараемся сделать наш праздник романтически-нежным и будем рады, если вы поддержите цветовую гамму нашей свадьбы. Просим девушек избегать белого и черного цвета в своих наряд и предусмотреть наряды пастельных тонов.",
+                                caption: "Мы стараемся сделать наш праздник романтически-нежным и будем рады, если вы поддержите цветовую гамму нашей свадьбы. Просим девушек избегать белого и черного цвета в своих нарядах и предусмотреть наряды пастельных тонов.",
                                 descr: ""
                             },
                             {
@@ -538,11 +576,13 @@
                                 descr: ""
                             },
                             {
-                                caption: "У нашей свадьбы есть хештег #AlyOlegWED, поэтому просим вас выкладывать фотографии и видео в социальные сети используя его.",
+                                caption: "У нашей свадьбы есть хештег #AlyOlegWED, поэтому просим вас выкладывать фотографии и видео в социальные сети, используя его.",
                                 descr: ""
                             },
                             {
-                                caption: "Просим вас подтвердить свое присутствие до 27 мая 2020 года.",
+                                caption: "Просим вас подтвердить свое присутствие до " + weddingDate.getDate()
+                                       + " " + ofMonthArr[ weddingDate.getMonth() - 1 ]
+                                       + " " + weddingDate.getFullYear() + " года.",
                                 descr: ""
                             }
                         ]
@@ -741,7 +781,7 @@
         </div>
         <!-- Карта -->
         <div id="meetingInfo">
-			<span>Ждём Вас <span class=".numeric-text">27</span class=".numeric-text"> июня <span class=".numeric-text">2020</span class=".numeric-text"> года<br class="maxScreen600"> в <span class=".numeric-text">15:00</span class=".numeric-text"> по адресу:<br class="maxScreen1024"> Г.Москва, ул. пр-т Мира,<br class="maxScreen600"> д.<span class=".numeric-text">14</span>, стр.<span class=".numeric-text">2</span class=".numeric-text"> <br>Сбор гостей на <span class=".numeric-text">1</span class=".numeric-text"> этаже в каминном зале.</span>
+			<span>Ждём Вас <span class=".numeric-text" id="weddingDate">27</span> <span id="weddingMonth">июня</span> <span class=".numeric-text" id="weddingYear">2020</span class=".numeric-text"> года<br class="maxScreen600"> в <span class=".numeric-text">15:00</span class=".numeric-text"> по адресу:<br class="maxScreen1024"> Г.Москва, пр-т Мира,<br class="maxScreen600"> д.<span class=".numeric-text">14</span>, стр.<span class=".numeric-text">2</span class=".numeric-text"> <br>Сбор гостей на <span class=".numeric-text">1</span class=".numeric-text"> этаже в каминном зале.</span>
         </div>
         <div id="map">
             <!--<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3c71e4641140f69d6c1f5c397cec375c584a6771617d8ab65e5ae1abe5ce46c0&amp;source=constructor" width="100%" height="720" frameborder="0"></iframe> -->    

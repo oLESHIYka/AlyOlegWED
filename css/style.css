@@ -1344,8 +1344,8 @@ header {
       -webkit-transform: scale(1) rotate(0deg);
     }
   
-    .gallery-view-text, .gallery-photo:before, .friends-photo-text, .friends-photo-toner, .program-hover-title, #program-toner,
-     {
+    .gallery-view-text, .gallery-photo:before, .friends-photo-text, .friends-photo-toner, .program-hover-title, #program-toner
+    {
       display: none;
     }
   
